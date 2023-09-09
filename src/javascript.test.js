@@ -1,4 +1,4 @@
-const { sumAll, multiAll } = require("./javascript.js");
+const { sumAll, multiAll, objMock } = require("./javascript.js");
 
 test("Sum", () => {
   expect(sumAll(2, 2)).toBe(4);
@@ -18,4 +18,8 @@ test("Multiply", () => {
 });
 test("Multiply", () => {
   expect(multiAll(2, 9)).toBe(18);
+});
+
+test("Object", () => {
+  expect(objMock("Kyle")).toMatchObject({ name: "John", age: "Doe" });
 });
