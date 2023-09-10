@@ -1,17 +1,19 @@
 const { objMock, ShipCreator, GameBoard, combCoordXY, compareCoords } = require("./javascript.js");
 
 //! Placement a ship on a Coordinate(s)
-describe.skip("Ship Placement", () => {
+describe("Ship Placement", () => {
   // Test case 1: Ship Placement
+  const arrX = ["A", "B", "C"];
+  const arrY = [1, 2, 3];
+  const arrXY = combCoordXY(arrX, arrY);
+  let board = new GameBoard(arrXY);
   test("Create a Big ship with length and health set to 3", () => {
-    const ship = new ShipCreator("Dreadnought", 4);
-    const gameGoard = new GameBoard([["A1"], ["A2"], ["A3"], ["B1"], ["B2"], ["B3"], ["C1"]]);
-    gameGoard.placeShip(["B2"]);
-    expect(ship).toMatchObject({
-      name: "Dreadnought",
-      length: 4,
-      health: 4,
-      sunken: false,
+    let ship1 = board.placeShip("A1", "Dreadnought", 4);
+    expect(ship1).toMatchObject({
+      coordXY: "A1",
+      left: null,
+      right: null,
+      ship: { name: "Dreadnought", length: 4, health: 4, sunken: false },
     });
   });
 });
@@ -25,25 +27,21 @@ describe("Find Node in Tree", () => {
   const board = new GameBoard(arrXY);
   // Test case 1: Find A1
   test("Find A1", () => {
-    expect(board.find("A1")).toMatchObject(
-      (node = {
-        coordXY: "A1",
-        left: null,
-        right: null,
-        ship: null,
-      })
-    );
+    expect(board.find("A1")).toMatchObject({
+      coordXY: "A1",
+      left: null,
+      right: null,
+      ship: null,
+    });
   });
   // Test case 2: Find C3
   test("Find C3", () => {
-    expect(board.find("C3")).toMatchObject(
-      (node = {
-        coordXY: "C3",
-        left: null,
-        right: null,
-        ship: null,
-      })
-    );
+    expect(board.find("C3")).toMatchObject({
+      coordXY: "C3",
+      left: null,
+      right: null,
+      ship: null,
+    });
   });
   // Test case 3: Find O3 which is not in the tree
   test("Find O3", () => {
@@ -61,27 +59,27 @@ describe("GameBoard Tree", () => {
     const board = new GameBoard(arrXY);
     expect(board).toMatchObject({
       coordXY: "Head",
-      root: (Node = {
+      root: {
         coordXY: "A2",
-        left: (Node = {
+        left: {
           coordXY: "A1",
           left: null,
           right: null,
           ship: null,
-        }),
-        right: (Node = {
+        },
+        right: {
           coordXY: "B1",
           left: null,
-          right: (Node = {
+          right: {
             coordXY: "B2",
             left: null,
             right: null,
             ship: null,
-          }),
+          },
           ship: null,
-        }),
+        },
         ship: null,
-      }),
+      },
     });
   });
 });

@@ -7,30 +7,9 @@ function objMock(obj) {
 }
 // ^^=======Mock Test=======^^
 
-//! Create Ships objects with different properties
-class ShipCreator {
-  constructor(name, length) {
-    this.name = name;
-    this.length = length;
-    this.health = length;
-    this.sunken = false;
-  }
-  //When the ship has been hit
-  hit() {
-    this.health--;
-    this.isSunk();
-  }
-  //See if the ship is already sunken
-  isSunk() {
-    if (this.health <= 0) {
-      this.sunken = true;
-    }
-  }
-}
-
 //! Array Coordinates
-const coordY = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const coordX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+const arrY = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 function combCoordXY(arrX, arrY) {
   const arrComb = [];
@@ -56,15 +35,12 @@ const createTree = (arrXY, beginIndex, lastIndex) => {
 //! Compare Coordinates and determine arg1 is bigger than arg2
 const compareCoords = (coord1, coord2) => {
   if (coord1 > coord2) {
-    console.log(`path 1`);
     return true;
   }
   if (coord1 < coord2) {
-    console.log(`path 2`);
     return false;
   }
   if (coord1 === coord2) {
-    console.log(`path 3`);
     return "same";
   }
 };
@@ -76,6 +52,27 @@ class Node {
     this.left = null;
     this.right = null;
     this.ship = null;
+  }
+}
+
+//! Create Ships objects with different properties
+class ShipCreator {
+  constructor(name, length) {
+    this.name = name;
+    this.length = length;
+    this.health = length;
+    this.sunken = false;
+  }
+  //When the ship has been hit
+  hit() {
+    this.health--;
+    this.isSunk();
+  }
+  //See if the ship is already sunken
+  isSunk() {
+    if (this.health <= 0) {
+      this.sunken = true;
+    }
   }
 }
 
@@ -102,7 +99,14 @@ class GameBoard {
     }
   }
   // Place ships at specific coordinates
-  placeShip(coordXY) {}
+  placeShip(coordXY, name, stats) {
+    let node = this.find(coordXY);
+    if (node === "not found") {
+      return "Invalid Coordinates";
+    }
+    node.ship = new ShipCreator(name, stats);
+    return node;
+  }
 }
 
 // vv==================Export=======================vv
