@@ -125,6 +125,7 @@ class GameBoard {
     this.coordXY = "Head";
     this.root = createTree(arrXY, 0, arrXY.length - 1);
     this.missedAttackArr = [];
+    this.allShipArr = [];
   }
   // Find node in BST
   find(coordXY, current = this.root) {
@@ -145,6 +146,7 @@ class GameBoard {
   // Place ships at specific coordinates
   placeShip(coordXY, name, stats, orient) {
     let ship = new ShipCreator(name, stats);
+    this.allShipArr.push(ship);
 
     switch (orient) {
       case "H": {
@@ -180,6 +182,15 @@ class GameBoard {
     } else {
       this.missedAttackArr.push(node.coordXY);
     }
+  }
+  allShipSunkenCheck(arr) {
+    let allSunken = true;
+    arr.forEach((ship) => {
+      if (ship.sunken) {
+        allSunken = true;
+      } else allSunken = false;
+    });
+    return allSunken;
   }
 }
 

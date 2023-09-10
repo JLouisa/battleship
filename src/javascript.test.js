@@ -13,6 +13,36 @@ const {
   verifyCoordGridHorizontal,
 } = require("./javascript.js");
 
+//! Check if all Ships are sunken
+describe("All Ships are sunken check", () => {
+  // Testing if all Ships are sunken
+  const arrXY = combCoordXY(arrX, arrY);
+  let board = new GameBoard(arrXY);
+  const node = board.placeShip("J0", "Yamato", 1, "V");
+  // Check missed Shot record nr.1
+  test("Check missed Shot record on B9", () => {
+    const checkNode = board.find("B9");
+    board.receiveAttack("B9");
+    expect(board.allShipSunkenCheck(board.allShipArr)).toBe(false);
+  });
+  // Sinking a ship
+  test("Sink a ship", () => {
+    const checkNode = board.find("J0");
+    board.receiveAttack("J0");
+    expect(checkNode.ship.health).toBe(0);
+  });
+  // Check ship if sunken
+  test("Check ship if sunken", () => {
+    const checkNode = board.find("J0");
+    expect(checkNode.ship.sunken).toBe(true);
+  });
+  // Check all Ships are sunken status
+  test("Check ship if sunken", () => {
+    const checkNode = board.find("J0");
+    expect(board.allShipSunkenCheck(board.allShipArr)).toBe(true);
+  });
+});
+
 //! Attack Registration on ships
 describe("Attack Registration", () => {
   // Testing attack and health registration of ships
@@ -20,7 +50,7 @@ describe("Attack Registration", () => {
   let board = new GameBoard(arrXY);
   const node = board.placeShip("J0", "Yamato", 3, "V");
   // Check health of ship in 'J0'
-  test("heck health of ship in 'J0'", () => {
+  test("Check health of ship in 'J0'", () => {
     const checkNode = board.find("J0");
     board.receiveAttack("J0");
     expect(checkNode.ship.health).toBe(2);
