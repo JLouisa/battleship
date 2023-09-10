@@ -171,10 +171,14 @@ class GameBoard {
     }
     return ship;
   }
+  // Receive attack Controller
+  receiveAttack(coordXY) {}
 }
 
 // vv==================Export=======================vv
 module.exports = {
+  arrX,
+  arrY,
   verifyCoordGridVertical,
   verifyCoordGridHorizontal,
   calcNeigborVertical,

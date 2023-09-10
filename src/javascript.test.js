@@ -1,4 +1,6 @@
 const {
+  arrX,
+  arrY,
   convert2Unicode,
   objMock,
   ShipCreator,
@@ -9,7 +11,20 @@ const {
   calcNeigborVertical,
   verifyCoordGridHorizontal,
   verifyCoordGridVertical,
+  receiveAttack,
 } = require("./javascript.js");
+
+//! Attack Registration on ships
+describe("Attack Registration", () => {
+  // Testing the Coordinates of the ship on the grid
+  const arrXY = combCoordXY(arrX, arrY);
+  let board = new GameBoard(arrXY);
+  const node = board.placeShip("J0", "Yamato", 3, "V");
+  // Check ship in 'J0', which is the first Node
+  test("Ship 4 long on 'G0' fits horizontally", () => {
+    expect(verifyCoordGridHorizontal("G0", 4)).toBe("G0");
+  });
+});
 
 //! Verify Coordinates fits on grid
 describe("Verify Coordinates horizontally", () => {
@@ -61,8 +76,6 @@ describe("Verify Coordinates Vertical", () => {
 describe("Check and verify grid placement", () => {
   // Testing the Coordinates of the ship on the grid
   // Place ship in 'F8', 'F9'
-  const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-  const arrY = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   const arrXY = combCoordXY(arrX, arrY);
   let board = new GameBoard(arrXY);
   const node = board.placeShip("F8", "Yamato", 3, "V");
@@ -92,8 +105,6 @@ describe("Check and verify grid placement", () => {
 describe("Place ship in multiple Nodes Vertical", () => {
   // Testing calculation of neigbor Coordinates on Nodes on creation
   // Place ship in 'A0', 'B0', 'C0', 'D0'
-  const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-  const arrY = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   const arrXY = combCoordXY(arrX, arrY);
   let board = new GameBoard(arrXY);
   const node = board.placeShip("J0", "Yamato", 3, "V");
@@ -138,8 +149,6 @@ describe("Place ship in multiple Nodes Vertical", () => {
 describe("Place ship in multiple Nodes Horizontal", () => {
   // Testing calculation of neigbor Coordinates on Nodes on creation
   // Place ship in 'A0', 'B0', 'C0', 'D0'
-  const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-  const arrY = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   const arrXY = combCoordXY(arrX, arrY);
   let board = new GameBoard(arrXY);
   const node = board.placeShip("A0", "Mikasa", 4, "H");
@@ -189,8 +198,6 @@ describe("Place ship in multiple Nodes Horizontal", () => {
 describe("Neigbor Coordinates on Nodes", () => {
   // Testing calculation of neigbor Coordinates on Nodes on creation
   // Using semi-Caesar Cipher to create neigbor Coordinates
-  const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-  const arrY = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   const arrXY = combCoordXY(arrX, arrY);
   const board = new GameBoard(arrXY);
   const node = board.find("A0");
@@ -310,8 +317,6 @@ describe("Convert unicode from letters and shift another letter", () => {
 //! Placement a ship on a Coordinate(s)
 describe("Ship Placement", () => {
   // Testing Ship Placement on specific Nodes
-  const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-  const arrY = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   const arrXY = combCoordXY(arrX, arrY);
   let board = new GameBoard(arrXY);
   // Test case 1: Ship Placement on A1
