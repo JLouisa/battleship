@@ -1,4 +1,4 @@
-const { objMock, ShipCreator, GameBoard, combCoordXY } = require("./javascript.js");
+const { objMock, ShipCreator, GameBoard, combCoordXY, CompareCoords } = require("./javascript.js");
 
 //! Placement a ship on a Coordinate(s)
 describe("Ship Placement", () => {
@@ -15,6 +15,28 @@ describe("Ship Placement", () => {
     });
   });
 });
+
+//! Compare Node size
+describe("Compare coordinates", () => {
+  // Test case 1: Compare A1 with A2
+  test("Compare A1 with A2", () => {
+    expect(CompareCoords(["A1"], ["A2"])).toBe(false);
+  });
+  // Test case 2: Compare A1 with B1
+  test("Create gameBoard", () => {
+    expect(CompareCoords(["A1"], ["B1"])).toBe(false);
+  });
+  // Test case 3: Compare B1 with A2
+  test("Compare B1 with A2", () => {
+    expect(CompareCoords(["B1"], ["A2"])).toBe(true);
+  });
+  // Test case 4: Compare C1 with A2
+  test("Compare C1 with A2", () => {
+    expect(CompareCoords(["C1"], ["A2"])).toBe(true);
+  });
+});
+
+//! Find Node on gameBoard XY
 
 //! Create gameBoard XY
 describe("GameBoard XY", () => {

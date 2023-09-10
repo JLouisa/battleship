@@ -51,6 +51,19 @@ const createTree = (arrXY, beginIndex, lastIndex) => {
   return node;
 };
 
+//! Compare Coordinates and determine which is bigger
+const CompareCoords = (coord1, coord2) => {
+  if (coord1[0] > coord2[0]) {
+    return true;
+  }
+  if (coord1[0] < coord2[0]) {
+    return false;
+  }
+  if (coord1[0] === coord2[0]) {
+    return null;
+  }
+};
+
 //! Create Nodes for GameBoard
 class Node {
   constructor(coordXY) {
@@ -67,10 +80,14 @@ class GameBoard {
     this.coord = "Head";
     this.root = createTree(arrXY, 0, arrXY.lastIndex - 1);
   }
+  // Find node in BST
+  find(coordXY) {
+    return node;
+  }
   // Place ships at specific coordinates
   placeShip(coordXY) {}
 }
 
 // vv==================Export=======================vv
-module.exports = { objMock, ShipCreator, GameBoard, combCoordXY };
+module.exports = { objMock, ShipCreator, GameBoard, combCoordXY, CompareCoords };
 // export { sumAll, multiAll, objMock, ships };
