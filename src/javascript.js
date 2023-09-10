@@ -35,7 +35,7 @@ const coordX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 function combCoordXY(arrX, arrY) {
   const arrComb = [];
   arrX.forEach((elementX) => {
-    arrY.forEach((elementY) => arrComb.push([`${elementX}${elementY}`]));
+    arrY.forEach((elementY) => arrComb.push(`${elementX}${elementY}`));
   });
   return arrComb;
 }
@@ -53,16 +53,19 @@ const createTree = (arrXY, beginIndex, lastIndex) => {
   }
 };
 
-//! Compare Coordinates and determine which is bigger
-const CompareCoords = (coord1, coord2) => {
-  if (coord1[0] > coord2[0]) {
+//! Compare Coordinates and determine arg1 is bigger than arg2
+const compareCoords = (coord1, coord2) => {
+  if (coord1 > coord2) {
+    console.log(`path 1`);
     return true;
   }
-  if (coord1[0] < coord2[0]) {
+  if (coord1 < coord2) {
+    console.log(`path 2`);
     return false;
   }
-  if (coord1[0] === coord2[0]) {
-    return null;
+  if (coord1 === coord2) {
+    console.log(`path 3`);
+    return "same";
   }
 };
 
@@ -79,17 +82,23 @@ class Node {
 //! Create GameBoard Class
 class GameBoard {
   constructor(arrXY) {
-    this.coord = "Head";
+    this.coordXY = "Head";
     this.root = createTree(arrXY, 0, arrXY.length - 1);
   }
   // Find node in BST
   find(coordXY, current = this.root) {
-    if (coordXY === current) {
+    if (current === null) {
+      return "not found";
+    }
+    if (compareCoords(coordXY, current.coordXY) === "same") {
       return current;
     }
-    if (CompareCoords(coordXY, current)) {
+    if (compareCoords(coordXY, current.coordXY)) {
+      current = current.right;
+      return this.find(coordXY, current);
+    } else {
       current = current.left;
-      return this.find(coordX, current);
+      return this.find(coordXY, current);
     }
   }
   // Place ships at specific coordinates
@@ -97,5 +106,5 @@ class GameBoard {
 }
 
 // vv==================Export=======================vv
-module.exports = { objMock, ShipCreator, GameBoard, combCoordXY, CompareCoords };
+module.exports = { objMock, ShipCreator, GameBoard, combCoordXY, compareCoords };
 // export { sumAll, multiAll, objMock, ships };

@@ -1,4 +1,4 @@
-const { objMock, ShipCreator, GameBoard, combCoordXY, CompareCoords } = require("./javascript.js");
+const { objMock, ShipCreator, GameBoard, combCoordXY, compareCoords } = require("./javascript.js");
 
 //! Placement a ship on a Coordinate(s)
 describe.skip("Ship Placement", () => {
@@ -17,16 +17,37 @@ describe.skip("Ship Placement", () => {
 });
 
 //! Find Node on gameBoard XY
-describe.skip("Compare coordinates", () => {
+describe("Find Node in Tree", () => {
+  // Create gameBoard Tree and find a specific Node
+  const arrX = ["A", "B", "C"];
+  const arrY = [1, 2, 3];
+  const arrXY = combCoordXY(arrX, arrY);
+  const board = new GameBoard(arrXY);
   // Test case 1: Find A1
   test("Find A1", () => {
-    const gameGoard = new GameBoard([["A1"], ["A2"], ["A3"], ["B1"], ["B2"], ["B3"], ["C1"]]);
-    expect(gameGoard.find(["A1"])).toBe((node.coord = ["A1"]));
+    expect(board.find("A1")).toMatchObject(
+      (node = {
+        coordXY: "A1",
+        left: null,
+        right: null,
+        ship: null,
+      })
+    );
   });
-  // Test case 2: Find A2
-  test("Find A2", () => {
-    const gameGoard = new GameBoard([["A1"], ["A2"], ["A3"], ["B1"], ["B2"], ["B3"], ["C1"]]);
-    expect(gameGoard.find(["A2"])).toBe((node.coord = ["A2"]));
+  // Test case 2: Find C3
+  test("Find C3", () => {
+    expect(board.find("C3")).toMatchObject(
+      (node = {
+        coordXY: "C3",
+        left: null,
+        right: null,
+        ship: null,
+      })
+    );
+  });
+  // Test case 3: Find O3 which is not in the tree
+  test("Find O3", () => {
+    expect(board.find("O3")).toBe("not found");
   });
 });
 
@@ -38,22 +59,21 @@ describe("GameBoard Tree", () => {
     const arrY = [1, 2];
     const arrXY = combCoordXY(arrX, arrY);
     const board = new GameBoard(arrXY);
-    console.log(board);
     expect(board).toMatchObject({
-      coord: "Head",
+      coordXY: "Head",
       root: (Node = {
-        coordXY: ["A2"],
+        coordXY: "A2",
         left: (Node = {
-          coordXY: ["A1"],
+          coordXY: "A1",
           left: null,
           right: null,
           ship: null,
         }),
         right: (Node = {
-          coordXY: ["B1"],
+          coordXY: "B1",
           left: null,
           right: (Node = {
-            coordXY: ["B2"],
+            coordXY: "B2",
             left: null,
             right: null,
             ship: null,
@@ -70,19 +90,23 @@ describe("GameBoard Tree", () => {
 describe("Compare coordinates", () => {
   // Test case 1: Compare A1 with A2
   test("Compare A1 with A2", () => {
-    expect(CompareCoords(["A1"], ["A2"])).toBe(false);
+    expect(compareCoords("A1", "A2")).toBe(false);
   });
   // Test case 2: Compare A1 with B1
   test("Create gameBoard", () => {
-    expect(CompareCoords(["A1"], ["B1"])).toBe(false);
+    expect(compareCoords("A1", "B1")).toBe(false);
   });
   // Test case 3: Compare B1 with A2
   test("Compare B1 with A2", () => {
-    expect(CompareCoords(["B1"], ["A2"])).toBe(true);
+    expect(compareCoords("B1", "A2")).toBe(true);
   });
   // Test case 4: Compare C1 with A2
   test("Compare C1 with A2", () => {
-    expect(CompareCoords(["C1"], ["A2"])).toBe(true);
+    expect(compareCoords("C1", "A2")).toBe(true);
+  });
+  // Test case 4: Compare same value
+  test("Compare C1 with C1", () => {
+    expect(compareCoords("C1", "C1")).toBe("same");
   });
 });
 
@@ -92,23 +116,13 @@ describe("Combine Coordinate", () => {
   test(/*.only*/ "Combine Coordinate 2x2", () => {
     const arrX = ["A", "B"];
     const arrY = [1, 2];
-    expect(combCoordXY(arrX, arrY)).toMatchObject([["A1"], ["A2"], ["B1"], ["B2"]]);
+    expect(combCoordXY(arrX, arrY)).toMatchObject(["A1", "A2", "B1", "B2"]);
   });
   // Test case 1: Combine Coordinate
   test(/*.only*/ "Combine Coordinate 3x3", () => {
     const arrX = ["A", "B", "C"];
     const arrY = [1, 2, 3];
-    expect(combCoordXY(arrX, arrY)).toMatchObject([
-      ["A1"],
-      ["A2"],
-      ["A3"],
-      ["B1"],
-      ["B2"],
-      ["B3"],
-      ["C1"],
-      ["C2"],
-      ["C3"],
-    ]);
+    expect(combCoordXY(arrX, arrY)).toMatchObject(["A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"]);
   });
 });
 
