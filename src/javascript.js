@@ -1,23 +1,23 @@
 // vv=======Mock Test=======vv
-function objMock(obj) {
+const objMock = (obj) => {
   return (obj = {
     name: "John",
     age: 30,
   });
-}
+};
 // ^^=======Mock Test=======^^
 
 //! Array Coordinates
 const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 const arrY = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-function combCoordXY(arrX, arrY) {
+const combCoordXY = (arrX, arrY) => {
   const arrComb = [];
   arrX.forEach((elementX) => {
     arrY.forEach((elementY) => arrComb.push(`${elementX}${elementY}`));
   });
   return arrComb;
-}
+};
 
 //! Create the BST module
 const createTree = (arrXY, beginIndex, lastIndex) => {
@@ -46,10 +46,10 @@ const compareCoords = (coord1, coord2) => {
 };
 
 //! Semi-Caesar Cipher // Calculate neigbor Node Coordinates
-function convert2Unicode(coordX, change) {
+const convert2Unicode = (coordX, change) => {
   let unicode = coordX.charCodeAt(0);
   return String.fromCharCode(unicode + change);
-}
+};
 const calcNeigborHorizontal = (coordXY, change) => {
   let newCoord = coordXY.split("");
   if ((newCoord[0] === "A" && change === -1) || (newCoord[0] === "J" && change === 1)) {

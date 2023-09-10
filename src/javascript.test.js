@@ -9,8 +9,54 @@ const {
   calcNeigborVertical,
 } = require("./javascript.js");
 
-//! Add Big Ships to multiple Nodes
-describe("Place ship in multiple Nodes", () => {
+//! Add Big Ships to multiple Nodes Vertical
+describe("Place ship in multiple Nodes Vertical", () => {
+  // Testing calculation of neigbor Coordinates on Nodes on creation
+  // "Place ship in 'A0', 'B0', 'C0', 'D0'"
+  const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+  const arrY = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const arrXY = combCoordXY(arrX, arrY);
+  let board = new GameBoard(arrXY);
+  const node = board.placeShip("J0", "Yamato", 3, "V");
+  // Check ship in 'J0', which is the first Node
+  test("Check ship in 'J0'", () => {
+    const checkNode = board.find("J0");
+    expect(checkNode.ship).toMatchObject({
+      name: "Yamato",
+      length: 3,
+      health: 3,
+      sunken: false,
+    });
+  });
+  // Check ship in 'J1', which is the second Node
+  test("Check ship in 'J1'", () => {
+    const checkNode = board.find("J1");
+    expect(checkNode.ship).toMatchObject({
+      name: "Yamato",
+      length: 3,
+      health: 3,
+      sunken: false,
+    });
+  });
+  // Check ship in 'J2', which is the third Node
+  test("Check ship in 'J2'", () => {
+    const checkNode = board.find("J2");
+    expect(checkNode.ship).toMatchObject({
+      name: "Yamato",
+      length: 3,
+      health: 3,
+      sunken: false,
+    });
+  });
+  // Check ship in 'J3', which is the fourth Node, which doesn't exist
+  test("Check ship in 'J3'", () => {
+    const checkNode = board.find("J3");
+    expect(checkNode.ship).toBe(null);
+  });
+});
+
+//! Add Big Ships to multiple Nodes Horizontal
+describe("Place ship in multiple Nodes Horizontal", () => {
   // Testing calculation of neigbor Coordinates on Nodes on creation
   // "Place ship in 'A0', 'B0', 'C0', 'D0'"
   const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
