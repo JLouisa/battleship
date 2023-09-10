@@ -128,26 +128,32 @@ class GameBoard {
   }
   // Place ships at specific coordinates
   placeShip(coordXY, name, stats, orient) {
+    let current = coordXY;
+    let ship = new ShipCreator(name, stats);
+
     switch (orient) {
       case "H": {
-        let current = coordXY;
-        let ship = new ShipCreator(name, stats);
-        for (let i = 0; i < stats; i++) {
-          let node = this.find(current);
-          if (node === "not found") {
-            return "Invalid Coordinates";
-          }
-          node.ship = ship;
-          current = node.neigborNodes.rightNeihbor;
-        }
-        return ship;
+        let rightNeihbor = "rightNeihbor";
+        return this.createMultipleShips(current, ship, stats, rightNeihbor);
         break;
       }
       case "V": {
-        return null;
+        let botNeihbor = "botNeihbor";
+        return this.createMultipleShips(current, ship, stats, botNeihbor);
         break;
       }
     }
+  }
+  createMultipleShips(current, ship, stats, neihbor) {
+    for (let i = 0; i < stats; i++) {
+      let node = this.find(current);
+      if (node === "not found") {
+        return "Invalid Coordinates";
+      }
+      node.ship = ship;
+      current = node.neigborNodes[neihbor];
+    }
+    return ship;
   }
 }
 
