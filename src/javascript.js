@@ -45,6 +45,29 @@ const compareCoords = (coord1, coord2) => {
   }
 };
 
+function convert2Unicode(coordX, change) {
+  let unicode = coordX.charCodeAt(0);
+  return String.fromCharCode(unicode + change);
+}
+
+const calcNeigborHorizontal = (coordXY, change) => {
+  let newCoord = coordXY.split("");
+  if ((newCoord[0] === "A" && change === -1) || (newCoord[0] === "J" && change === 1)) {
+    return null;
+  }
+  newCoord[0] = convert2Unicode(newCoord[0], change);
+  return newCoord.join("");
+};
+
+const calcNeigborVertical = (coordXY, change) => {
+  let newCoord = coordXY.split(/([A-Z])(?=\d)|(\d{2,})/).filter(Boolean);
+  if ((newCoord[1] === "1" && change === -1) || (newCoord[1] === "10" && change === 1)) {
+    return null;
+  }
+  newCoord[1] = Number(newCoord[1]) + change;
+  return newCoord.join("");
+};
+
 //! Create Nodes for GameBoard
 class Node {
   constructor(coordXY) {
@@ -52,6 +75,12 @@ class Node {
     this.left = null;
     this.right = null;
     this.ship = null;
+    this.neigborNodes = {
+      topNeihbor: calcNeigborVertical(coordXY, -1),
+      botNeihbor: calcNeigborVertical(coordXY, 1),
+      leftNeihbor: calcNeigborHorizontal(coordXY, -1),
+      rightNeihbor: calcNeigborHorizontal(coordXY, 1),
+    };
   }
 }
 
@@ -110,5 +139,14 @@ class GameBoard {
 }
 
 // vv==================Export=======================vv
-module.exports = { objMock, ShipCreator, GameBoard, combCoordXY, compareCoords };
+module.exports = {
+  calcNeigborVertical,
+  convert2Unicode,
+  calcNeigborHorizontal,
+  objMock,
+  ShipCreator,
+  GameBoard,
+  combCoordXY,
+  compareCoords,
+};
 // export { sumAll, multiAll, objMock, ships };

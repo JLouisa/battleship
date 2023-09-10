@@ -1,14 +1,87 @@
-const { objMock, ShipCreator, GameBoard, combCoordXY, compareCoords } = require("./javascript.js");
+const {
+  convert2Unicode,
+  objMock,
+  ShipCreator,
+  GameBoard,
+  combCoordXY,
+  compareCoords,
+  calcNeigborHorizontal,
+  calcNeigborVertical,
+} = require("./javascript.js");
+
+//! Calculate neigbor Coordinates Vertical
+describe("Neigbor Coordinates Vertical", () => {
+  // Testing calculation of neigbor Coordinates on Nodes
+  // Using semi-Caesar Cipher to convert A1 to A2
+  test("Convert from A1 to A2", () => {
+    expect(calcNeigborVertical("A1", 1)).toBe("A2");
+  });
+  // Using semi-Caesar Cipher to convert B7 to B8
+  test("Convert from B7 to B8", () => {
+    expect(calcNeigborVertical("B7", 1)).toBe("B8");
+  });
+  // Using semi-Caesar Cipher to convert B7 to B8
+  test("Convert from backwards J3 to J2", () => {
+    expect(calcNeigborVertical("J3", -1)).toBe("J2");
+  });
+  // Using semi-Caesar Cipher to test out of bound
+  test("Convert out of bound J3", () => {
+    expect(calcNeigborVertical("J1", -1)).toBe(null);
+  });
+  // Using semi-Caesar Cipher to test out of bound
+  test("Convert out of bound C10", () => {
+    expect(calcNeigborVertical("C10", 1)).toBe(null);
+  });
+});
+
+//! Calculate neigbor Coordinates Horizontal
+describe("Neigbor Coordinates Horizontal", () => {
+  // Testing calculation of neigbor Coordinates on Nodes
+  // Using semi-Caesar Cipher to convert A1 to B1
+  test("Convert from A1 to B1", () => {
+    expect(calcNeigborHorizontal("A1", 1)).toBe("B1");
+  });
+  // Using semi-Caesar Cipher to convert N6 to M6
+  test("Convert from N6 to M6", () => {
+    expect(calcNeigborHorizontal("N6", -1)).toBe("M6");
+  });
+  // Using semi-Caesar Cipher to test out of bound
+  test("Convert A1", () => {
+    expect(calcNeigborHorizontal("A1", -1)).toBe(null);
+  });
+  // Using semi-Caesar Cipher to test out of bound
+  test("Convert J1", () => {
+    expect(calcNeigborHorizontal("J1", 1)).toBe(null);
+  });
+});
+
+//! Caesar Cipher
+describe("Convert unicode from letters and shift another letter", () => {
+  // Convert unicode from letters and shift another letter
+  // Test case 1: Convert from A to B
+  test("A to B", () => {
+    expect(convert2Unicode("A", 1)).toBe("B");
+  });
+  // Test case 2: Convert from S to T
+  test("S to T", () => {
+    expect(convert2Unicode("S", 1)).toBe("T");
+  });
+  // Test case 3: Convert backwards from L to K
+  test("L to K", () => {
+    expect(convert2Unicode("L", -1)).toBe("K");
+  });
+});
 
 //! Placement a ship on a Coordinate(s)
 describe("Ship Placement", () => {
-  // Test case 1: Ship Placement
+  // Testing Ship Placement on specific Nodes
   const arrX = ["A", "B", "C"];
   const arrY = [1, 2, 3];
   const arrXY = combCoordXY(arrX, arrY);
   let board = new GameBoard(arrXY);
-  test("Create a Big ship with length and health set to 3", () => {
-    let ship1 = board.placeShip("A1", "Dreadnought", 4);
+  // Test case 1: Ship Placement on A1
+  test("Create a Big ship with length and health set to 4", () => {
+    const ship1 = board.placeShip("A1", "Dreadnought", 4);
     expect(ship1).toMatchObject({
       coordXY: "A1",
       left: null,
@@ -16,9 +89,24 @@ describe("Ship Placement", () => {
       ship: { name: "Dreadnought", length: 4, health: 4, sunken: false },
     });
   });
+  // Test case 2: Ship Placement on C3
+  test("Create a Big ship with length and health set to 2", () => {
+    const ship1 = board.placeShip("C3", "Mikasa", 2);
+    expect(ship1).toMatchObject({
+      coordXY: "C3",
+      left: null,
+      right: null,
+      ship: { name: "Mikasa", length: 2, health: 2, sunken: false },
+    });
+  });
+  // Test case 3: Ship Placement on B2
+  test("Inpsect Ship after creation on Node", () => {
+    const ship1 = board.placeShip("B2", "Yamato", 2);
+    expect(ship1.ship).toMatchObject({ name: "Yamato", length: 2, health: 2, sunken: false });
+  });
 });
 
-//! Find Node on gameBoard XY
+//! Find Node on in BS Tree
 describe("Find Node in Tree", () => {
   // Create gameBoard Tree and find a specific Node
   const arrX = ["A", "B", "C"];
@@ -209,7 +297,7 @@ describe("ShipCreator", () => {
 //! Describe the ShipCreator class and it's isSunk() methods
 describe("ShipCreator", () => {
   // Test case 1: Check if isSunk() sets sunken to true when health is 0
-  test("should set sunken to true when health is 0", () => {
+  test("Should set sunken to true when health is 0", () => {
     const ship = new ShipCreator("ShipName", 3);
     ship.health = 0; // Simulate a ship with 0 health
     ship.isSunk();
@@ -217,7 +305,7 @@ describe("ShipCreator", () => {
   });
 
   // Test case 2: Check if isSunk() does not set sunken to true when health is greater than 0
-  test("should not set sunken to true when health is greater than 0", () => {
+  test("Should not set sunken to true when health is greater than 0", () => {
     const ship = new ShipCreator("ShipName", 3);
     ship.health = 2; // Simulate a ship with 2 health
     ship.isSunk();
@@ -225,7 +313,7 @@ describe("ShipCreator", () => {
   });
 
   // Test case 3: Check if isSunk() does set sunken to true when health is negative
-  test("should set sunken to true when health is negative", () => {
+  test("Should set sunken to true when health is negative", () => {
     const ship = new ShipCreator("ShipName", 3);
     ship.health = -1; // Simulate a ship with negative health
     ship.isSunk();
@@ -236,7 +324,7 @@ describe("ShipCreator", () => {
 //! Describe the ShipCreator class and it's hit() & isSunk() methods
 describe("ShipCreator", () => {
   // Test case 1: Check if isSunk() sets sunken to true when hit() health is 0
-  test("should set sunken to true when health is 0", () => {
+  test("Should set sunken to true when health is 0", () => {
     const ship = new ShipCreator("Boat", 1);
     ship.hit();
     expect(ship).toMatchObject({
