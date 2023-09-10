@@ -28,10 +28,19 @@ test("objMock", () => {
 });
 
 test("Ship Class Object", () => {
-  expect(ships("ShipBig", 3)).toMatchObject({
-    name: "ShipBig",
-    length: 3,
-    health: 3,
+  expect(ships("Mikasa", 2)).toMatchObject({
+    name: "Mikasa",
+    length: 2,
+    health: 2,
+    sunken: false,
+  });
+});
+
+test("Ship Class Object", () => {
+  expect(ships("Yamato", 4)).toMatchObject({
+    name: "Yamato",
+    length: 4,
+    health: 4,
     sunken: false,
   });
 });
