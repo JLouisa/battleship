@@ -9,7 +9,7 @@ function objMock(obj) {
 
 //! Array Coordinates
 const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-const arrY = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const arrY = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 function combCoordXY(arrX, arrY) {
   const arrComb = [];
@@ -45,11 +45,11 @@ const compareCoords = (coord1, coord2) => {
   }
 };
 
+//! Semi-Caesar Cipher // Calculate neigbor Node Coordinates
 function convert2Unicode(coordX, change) {
   let unicode = coordX.charCodeAt(0);
   return String.fromCharCode(unicode + change);
 }
-
 const calcNeigborHorizontal = (coordXY, change) => {
   let newCoord = coordXY.split("");
   if ((newCoord[0] === "A" && change === -1) || (newCoord[0] === "J" && change === 1)) {
@@ -58,10 +58,9 @@ const calcNeigborHorizontal = (coordXY, change) => {
   newCoord[0] = convert2Unicode(newCoord[0], change);
   return newCoord.join("");
 };
-
 const calcNeigborVertical = (coordXY, change) => {
-  let newCoord = coordXY.split(/([A-Z])(?=\d)|(\d{2,})/).filter(Boolean);
-  if ((newCoord[1] === "1" && change === -1) || (newCoord[1] === "10" && change === 1)) {
+  let newCoord = coordXY.split("");
+  if ((newCoord[1] === "0" && change === -1) || (newCoord[1] === "9" && change === 1)) {
     return null;
   }
   newCoord[1] = Number(newCoord[1]) + change;

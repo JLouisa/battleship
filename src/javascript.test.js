@@ -14,16 +14,16 @@ describe("Neigbor Coordinates on Nodes", () => {
   // Testing calculation of neigbor Coordinates on Nodes on creation
   // Using semi-Caesar Cipher to create neigbor Coordinates
   const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-  const arrY = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const arrY = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   const arrXY = combCoordXY(arrX, arrY);
   const board = new GameBoard(arrXY);
-  const node = board.find("A1");
+  const node = board.find("A0");
   test("Calculate neigborNodes on Node", () => {
     expect(node.neigborNodes).toMatchObject({
       topNeihbor: null,
-      botNeihbor: "A2",
+      botNeihbor: "A1",
       leftNeihbor: null,
-      rightNeihbor: "B1",
+      rightNeihbor: "B0",
     });
   });
   // Using semi-Caesar Cipher to create neigbor Coordinates
@@ -37,14 +37,33 @@ describe("Neigbor Coordinates on Nodes", () => {
     });
   });
   // Using semi-Caesar Cipher to create neigbor Coordinates
-  const node3 = board.find("J10");
-  console.log(node3);
+  const node3 = board.find("J9");
   test("Calculate neigborNodes on Node", () => {
     expect(node3.neigborNodes).toMatchObject({
-      topNeihbor: "J9",
+      topNeihbor: "J8",
       botNeihbor: null,
-      leftNeihbor: "I10",
+      leftNeihbor: "I9",
       rightNeihbor: null,
+    });
+  });
+  // Using semi-Caesar Cipher to create neigbor Coordinates
+  const node4 = board.find("J0");
+  test("Calculate neigborNodes on Node", () => {
+    expect(node4.neigborNodes).toMatchObject({
+      topNeihbor: null,
+      botNeihbor: "J1",
+      leftNeihbor: "I0",
+      rightNeihbor: null,
+    });
+  });
+  // Using semi-Caesar Cipher to create neigbor Coordinates
+  const node5 = board.find("A9");
+  test("Calculate neigborNodes on Node", () => {
+    expect(node5.neigborNodes).toMatchObject({
+      topNeihbor: "A8",
+      botNeihbor: null,
+      leftNeihbor: null,
+      rightNeihbor: "B9",
     });
   });
 });
@@ -65,12 +84,12 @@ describe("Neigbor Coordinates Vertical", () => {
     expect(calcNeigborVertical("J3", -1)).toBe("J2");
   });
   // Using semi-Caesar Cipher to test out of bound
-  test("Convert out of bound J3", () => {
-    expect(calcNeigborVertical("J1", -1)).toBe(null);
+  test("Convert out of bound J0", () => {
+    expect(calcNeigborVertical("J0", -1)).toBe(null);
   });
   // Using semi-Caesar Cipher to test out of bound
-  test("Convert out of bound C10", () => {
-    expect(calcNeigborVertical("C10", 1)).toBe(null);
+  test("Convert out of bound C9", () => {
+    expect(calcNeigborVertical("C9", 1)).toBe(null);
   });
 });
 
@@ -86,12 +105,12 @@ describe("Neigbor Coordinates Horizontal", () => {
     expect(calcNeigborHorizontal("N6", -1)).toBe("M6");
   });
   // Using semi-Caesar Cipher to test out of bound
-  test("Convert A1", () => {
-    expect(calcNeigborHorizontal("A1", -1)).toBe(null);
+  test("Convert A0", () => {
+    expect(calcNeigborHorizontal("A0", -1)).toBe(null);
   });
   // Using semi-Caesar Cipher to test out of bound
-  test("Convert J1", () => {
-    expect(calcNeigborHorizontal("J1", 1)).toBe(null);
+  test("Convert J9", () => {
+    expect(calcNeigborHorizontal("J9", 1)).toBe(null);
   });
 });
 
