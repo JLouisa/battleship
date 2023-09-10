@@ -1,16 +1,16 @@
 const {
   arrX,
   arrY,
-  convert2Unicode,
   objMock,
-  ShipCreator,
   GameBoard,
+  ShipCreator,
   combCoordXY,
   compareCoords,
-  calcNeigborHorizontal,
+  convert2Unicode,
   calcNeigborVertical,
-  verifyCoordGridHorizontal,
+  calcNeigborHorizontal,
   verifyCoordGridVertical,
+  verifyCoordGridHorizontal,
 } = require("./javascript.js");
 
 //! Attack Registration on ships
@@ -30,6 +30,7 @@ describe("Attack Registration", () => {
     const checkNode = board.find("J1");
     board.receiveAttack("J1");
     expect(checkNode.ship.health).toBe(1);
+    expect(checkNode.ship.sunken).toBe(false);
   });
   // Check health of ship in 'J2'
   test("Check health of ship in 'J2'", () => {
@@ -41,6 +42,24 @@ describe("Attack Registration", () => {
   test("Check ship if sunken", () => {
     const checkNode = board.find("J2");
     expect(checkNode.ship.sunken).toBe(true);
+  });
+  // Check missed Shot record nr.1
+  test("Check missed Shot record on J3", () => {
+    const checkNode = board.find("J3");
+    board.receiveAttack("J3");
+    expect(board.missedAttackArr).toMatchObject(["J3"]);
+  });
+  // Check missed Shot record nr.2
+  test("Check missed Shot record on A0", () => {
+    const checkNode = board.find("A0");
+    board.receiveAttack("A0");
+    expect(board.missedAttackArr).toMatchObject(["J3", "A0"]);
+  });
+  // Check missed Shot record nr.3
+  test("Check missed Shot record on B9", () => {
+    const checkNode = board.find("B9");
+    board.receiveAttack("B9");
+    expect(board.missedAttackArr).toMatchObject(["J3", "A0", "B9"]);
   });
 });
 

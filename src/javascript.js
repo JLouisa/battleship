@@ -124,6 +124,7 @@ class GameBoard {
   constructor(arrXY) {
     this.coordXY = "Head";
     this.root = createTree(arrXY, 0, arrXY.length - 1);
+    this.missedAttackArr = [];
   }
   // Find node in BST
   find(coordXY, current = this.root) {
@@ -174,7 +175,11 @@ class GameBoard {
   // Receive attack Controller
   receiveAttack(coordXY) {
     let node = this.find(coordXY);
-    node.ship.hit();
+    if (node.ship) {
+      node.ship.hit();
+    } else {
+      this.missedAttackArr.push(node.coordXY);
+    }
   }
 }
 
