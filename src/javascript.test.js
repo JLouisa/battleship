@@ -11,18 +11,36 @@ const {
   calcNeigborVertical,
   verifyCoordGridHorizontal,
   verifyCoordGridVertical,
-  receiveAttack,
 } = require("./javascript.js");
 
 //! Attack Registration on ships
 describe("Attack Registration", () => {
-  // Testing the Coordinates of the ship on the grid
+  // Testing attack and health registration of ships
   const arrXY = combCoordXY(arrX, arrY);
   let board = new GameBoard(arrXY);
   const node = board.placeShip("J0", "Yamato", 3, "V");
-  // Check ship in 'J0', which is the first Node
-  test("Ship 4 long on 'G0' fits horizontally", () => {
-    expect(verifyCoordGridHorizontal("G0", 4)).toBe("G0");
+  // Check health of ship in 'J0'
+  test("heck health of ship in 'J0'", () => {
+    const checkNode = board.find("J0");
+    board.receiveAttack("J0");
+    expect(checkNode.ship.health).toBe(2);
+  });
+  // Check health of ship in 'J1'
+  test("Check health of ship in 'J1'", () => {
+    const checkNode = board.find("J1");
+    board.receiveAttack("J1");
+    expect(checkNode.ship.health).toBe(1);
+  });
+  // Check health of ship in 'J2'
+  test("Check health of ship in 'J2'", () => {
+    const checkNode = board.find("J2");
+    board.receiveAttack("J2");
+    expect(checkNode.ship.health).toBe(0);
+  });
+  // Check ship if sunken
+  test("Check ship if sunken", () => {
+    const checkNode = board.find("J2");
+    expect(checkNode.ship.sunken).toBe(true);
   });
 });
 

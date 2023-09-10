@@ -172,13 +172,14 @@ class GameBoard {
     return ship;
   }
   // Receive attack Controller
-  receiveAttack(coordXY) {}
+  receiveAttack(coordXY) {
+    let node = this.find(coordXY);
+    node.ship.hit();
+  }
 }
 
 // vv==================Export=======================vv
 module.exports = {
-  arrX,
-  arrY,
   verifyCoordGridVertical,
   verifyCoordGridHorizontal,
   calcNeigborVertical,
@@ -189,5 +190,7 @@ module.exports = {
   GameBoard,
   combCoordXY,
   compareCoords,
+  arrX,
+  arrY,
 };
 // export { sumAll, multiAll, objMock, ships };
