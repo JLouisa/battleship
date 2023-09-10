@@ -1,4 +1,39 @@
-const { ShipCreator, objMock } = require("./javascript.js");
+const { objMock, ShipCreator, GameBoard, combCoordXY } = require("./javascript.js");
+
+//! Placement a ship on a Coordinate(s)
+describe("Ship Placement", () => {
+  // Test case 1: Ship Placement
+  test.skip("Create a Big ship with length and health set to 3", () => {
+    const ship = new ShipCreator("Dreadnought", 4);
+    const gameGoard = new GameBoard([["A1"], ["A2"], ["A3"], ["B1"], ["B2"], ["B3"], ["C1"]]);
+    gameGoard.placeShip(["B2"]);
+    expect(ship).toMatchObject({
+      name: "Dreadnought",
+      length: 4,
+      health: 4,
+      sunken: false,
+    });
+  });
+});
+
+//! Create gameBoard XY
+describe("GameBoard XY", () => {
+  // Test case 1: Create gameBoard
+  test(/*.only*/ "Create gameBoard", () => {
+    expect(combCoordXY(["A", "B"], [1, 2])).toMatchObject([["A1"], ["A2"], ["B1"], ["B2"]]);
+  });
+});
+
+//! Testing Mock Object
+describe("Mock Object", () => {
+  test("Test Mock object properties", () => {
+    const ship = objMock("John", 30);
+    expect(ship).toMatchObject({
+      name: "John",
+      age: 30,
+    });
+  });
+});
 
 //! Describe the ShipCreator class and created objects
 describe("ShipCreator", () => {
