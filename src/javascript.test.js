@@ -71,9 +71,9 @@ describe("ShipCreator", () => {
   });
 });
 
-//! Describe the ShipCreator class and its methods
+//! Describe the ShipCreator class and it's isSunk() methods
 describe("ShipCreator", () => {
-  // Test case 1: Check if isSunk sets sunken to true when health is 0
+  // Test case 1: Check if isSunk() sets sunken to true when health is 0
   test("should set sunken to true when health is 0", () => {
     const ship = new ShipCreator("ShipName", 3);
     ship.health = 0; // Simulate a ship with 0 health
@@ -81,7 +81,7 @@ describe("ShipCreator", () => {
     expect(ship.sunken).toBe(true);
   });
 
-  // Test case 2: Check if isSunk does not set sunken to true when health is greater than 0
+  // Test case 2: Check if isSunk() does not set sunken to true when health is greater than 0
   test("should not set sunken to true when health is greater than 0", () => {
     const ship = new ShipCreator("ShipName", 3);
     ship.health = 2; // Simulate a ship with 2 health
@@ -89,11 +89,26 @@ describe("ShipCreator", () => {
     expect(ship.sunken).toBe(false);
   });
 
-  // Test case 3: Check if isSunk does set sunken to true when health is negative
+  // Test case 3: Check if isSunk() does set sunken to true when health is negative
   test("should set sunken to true when health is negative", () => {
     const ship = new ShipCreator("ShipName", 3);
     ship.health = -1; // Simulate a ship with negative health
     ship.isSunk();
     expect(ship.sunken).toBe(true);
+  });
+});
+
+//! Describe the ShipCreator class and it's hit() & isSunk() methods
+describe("ShipCreator", () => {
+  // Test case 1: Check if isSunk() sets sunken to true when hit() health is 0
+  test("should set sunken to true when health is 0", () => {
+    const ship = new ShipCreator("Boat", 1);
+    ship.hit();
+    expect(ship).toMatchObject({
+      name: "Boat",
+      length: 1,
+      health: 0,
+      sunken: true,
+    });
   });
 });

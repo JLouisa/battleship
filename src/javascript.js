@@ -15,6 +15,7 @@ class ShipCreator {
   }
   hit() {
     this.health--;
+    this.isSunk();
   }
   isSunk() {
     if (this.health <= 0) {
@@ -23,6 +24,6 @@ class ShipCreator {
   }
 }
 
-//==================Export=======================
+// vv==================Export=======================vv
 module.exports = { ShipCreator, objMock };
 // export { sumAll, multiAll, objMock, ships };
