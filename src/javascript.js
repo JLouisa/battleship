@@ -127,13 +127,27 @@ class GameBoard {
     }
   }
   // Place ships at specific coordinates
-  placeShip(coordXY, name, stats) {
-    let node = this.find(coordXY);
-    if (node === "not found") {
-      return "Invalid Coordinates";
+  placeShip(coordXY, name, stats, orient) {
+    switch (orient) {
+      case "H": {
+        let current = coordXY;
+        let ship = new ShipCreator(name, stats);
+        for (let i = 0; i < stats; i++) {
+          let node = this.find(current);
+          if (node === "not found") {
+            return "Invalid Coordinates";
+          }
+          node.ship = ship;
+          current = node.neigborNodes.rightNeihbor;
+        }
+        return ship;
+        break;
+      }
+      case "V": {
+        return null;
+        break;
+      }
     }
-    node.ship = new ShipCreator(name, stats);
-    return node;
   }
 }
 

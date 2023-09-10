@@ -9,6 +9,57 @@ const {
   calcNeigborVertical,
 } = require("./javascript.js");
 
+//! Add Big Ships to multiple Nodes
+describe("Place ship in multiple Nodes", () => {
+  // Testing calculation of neigbor Coordinates on Nodes on creation
+  // "Place ship in 'A0', 'B0', 'C0', 'D0'"
+  const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+  const arrY = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const arrXY = combCoordXY(arrX, arrY);
+  let board = new GameBoard(arrXY);
+  const node = board.placeShip("A0", "Mikasa", 4, "H");
+  // Check ship in 'A0', which is the first Node
+  test("Check ship in 'A0'", () => {
+    const checkNode = board.find("A0");
+    expect(checkNode.ship).toMatchObject({
+      name: "Mikasa",
+      length: 4,
+      health: 4,
+      sunken: false,
+    });
+  });
+  // Check ship in 'B0', which is the first Node
+  test("Check ship in 'B0'", () => {
+    const checkNode = board.find("B0");
+    expect(checkNode.ship).toMatchObject({
+      name: "Mikasa",
+      length: 4,
+      health: 4,
+      sunken: false,
+    });
+  });
+  // Check ship in 'A0', which is the first Node
+  test("Check ship in 'C0'", () => {
+    const checkNode = board.find("C0");
+    expect(checkNode.ship).toMatchObject({
+      name: "Mikasa",
+      length: 4,
+      health: 4,
+      sunken: false,
+    });
+  });
+  // Check ship in 'B0', which is the first Node
+  test("Check ship in 'D0'", () => {
+    const checkNode = board.find("D0");
+    expect(checkNode.ship).toMatchObject({
+      name: "Mikasa",
+      length: 4,
+      health: 4,
+      sunken: false,
+    });
+  });
+});
+
 //! Calculate neigbor Node Coordinates
 describe("Neigbor Coordinates on Nodes", () => {
   // Testing calculation of neigbor Coordinates on Nodes on creation
@@ -134,14 +185,14 @@ describe("Convert unicode from letters and shift another letter", () => {
 //! Placement a ship on a Coordinate(s)
 describe("Ship Placement", () => {
   // Testing Ship Placement on specific Nodes
-  const arrX = ["A", "B", "C"];
-  const arrY = [1, 2, 3];
+  const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+  const arrY = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   const arrXY = combCoordXY(arrX, arrY);
   let board = new GameBoard(arrXY);
   // Test case 1: Ship Placement on A1
   test("Create a Big ship with length and health set to 4", () => {
-    const ship1 = board.placeShip("A1", "Dreadnought", 4);
-    expect(ship1).toMatchObject({
+    const ship1 = board.placeShip("A1", "Dreadnought", 4, "H");
+    expect(board.find("A1")).toMatchObject({
       coordXY: "A1",
       left: null,
       right: null,
@@ -150,8 +201,8 @@ describe("Ship Placement", () => {
   });
   // Test case 2: Ship Placement on C3
   test("Create a Big ship with length and health set to 2", () => {
-    const ship1 = board.placeShip("C3", "Mikasa", 2);
-    expect(ship1).toMatchObject({
+    const ship1 = board.placeShip("C3", "Mikasa", 2, "H");
+    expect(board.find("C3")).toMatchObject({
       coordXY: "C3",
       left: null,
       right: null,
@@ -160,8 +211,8 @@ describe("Ship Placement", () => {
   });
   // Test case 3: Ship Placement on B2
   test("Inpsect Ship after creation on Node", () => {
-    const ship1 = board.placeShip("B2", "Yamato", 2);
-    expect(ship1.ship).toMatchObject({ name: "Yamato", length: 2, health: 2, sunken: false });
+    const ship1 = board.placeShip("B2", "Yamato", 2, "H");
+    expect(ship1).toMatchObject({ name: "Yamato", length: 2, health: 2, sunken: false });
   });
 });
 
