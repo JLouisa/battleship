@@ -40,15 +40,17 @@ function combCoordXY(arrX, arrY) {
   return arrComb;
 }
 
+//! Create the BST module
 const createTree = (arrXY, beginIndex, lastIndex) => {
-  if (lastIndex > beginIndex) {
+  if (beginIndex > lastIndex) {
     return null;
+  } else {
+    const mid = Number(Math.floor((beginIndex + lastIndex) / 2));
+    const node = new Node(arrXY[mid]);
+    node.left = createTree(arrXY, beginIndex, mid - 1);
+    node.right = createTree(arrXY, mid + 1, lastIndex);
+    return node;
   }
-  const mid = Number(Math.floor(beginIndex + lastIndex) / 2);
-  const node = new Node(arrXY[mid]);
-  node.left = createTree(arrXY, beginIndex, mid);
-  node.right = createTree(arrXY, mid + 1, lastIndex);
-  return node;
 };
 
 //! Compare Coordinates and determine which is bigger
@@ -78,11 +80,17 @@ class Node {
 class GameBoard {
   constructor(arrXY) {
     this.coord = "Head";
-    this.root = createTree(arrXY, 0, arrXY.lastIndex - 1);
+    this.root = createTree(arrXY, 0, arrXY.length - 1);
   }
   // Find node in BST
-  find(coordXY) {
-    return node;
+  find(coordXY, current = this.root) {
+    if (coordXY === current) {
+      return current;
+    }
+    if (CompareCoords(coordXY, current)) {
+      current = current.left;
+      return this.find(coordX, current);
+    }
   }
   // Place ships at specific coordinates
   placeShip(coordXY) {}
