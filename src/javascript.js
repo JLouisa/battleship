@@ -50,6 +50,7 @@ const convert2Unicode = (coordX, change) => {
   let unicode = coordX.charCodeAt(0);
   return String.fromCharCode(unicode + change);
 };
+
 const calcNeigborHorizontal = (coordXY, change) => {
   let newCoord = coordXY.split("");
   if ((newCoord[0] === "A" && change === -1) || (newCoord[0] === "J" && change === 1)) {
@@ -58,6 +59,7 @@ const calcNeigborHorizontal = (coordXY, change) => {
   newCoord[0] = convert2Unicode(newCoord[0], change);
   return newCoord.join("");
 };
+
 const calcNeigborVertical = (coordXY, change) => {
   let newCoord = coordXY.split("");
   if ((newCoord[1] === "0" && change === -1) || (newCoord[1] === "9" && change === 1)) {
@@ -65,6 +67,19 @@ const calcNeigborVertical = (coordXY, change) => {
   }
   newCoord[1] = Number(newCoord[1]) + change;
   return newCoord.join("");
+};
+
+//! Verify Coordinates fits on grid
+const verifyCoordGridVertical = (coordXY, stats) => {
+  if (coordXY < `${coordXY[0]}${10 - stats}`) {
+    return coordXY;
+  } else return `${coordXY[0]}${10 - stats}`;
+};
+
+const verifyCoordGridHorizontal = (coordXY, stats) => {
+  if (coordXY > `${convert2Unicode("K", -stats)}${coordXY[1]}`) {
+    return `${convert2Unicode("K", -stats)}${coordXY[1]}`;
+  } else return coordXY;
 };
 
 //! Create Nodes for GameBoard
@@ -128,16 +143,17 @@ class GameBoard {
   }
   // Place ships at specific coordinates
   placeShip(coordXY, name, stats, orient) {
-    let current = coordXY;
     let ship = new ShipCreator(name, stats);
 
     switch (orient) {
       case "H": {
+        let current = verifyCoordGridHorizontal(coordXY, stats);
         let rightNeihbor = "rightNeihbor";
         return this.createMultipleShips(current, ship, stats, rightNeihbor);
         break;
       }
       case "V": {
+        let current = verifyCoordGridVertical(coordXY, stats);
         let botNeihbor = "botNeihbor";
         return this.createMultipleShips(current, ship, stats, botNeihbor);
         break;
@@ -159,6 +175,8 @@ class GameBoard {
 
 // vv==================Export=======================vv
 module.exports = {
+  verifyCoordGridVertical,
+  verifyCoordGridHorizontal,
   calcNeigborVertical,
   convert2Unicode,
   calcNeigborHorizontal,

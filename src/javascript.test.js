@@ -7,12 +7,91 @@ const {
   compareCoords,
   calcNeigborHorizontal,
   calcNeigborVertical,
+  verifyCoordGridHorizontal,
+  verifyCoordGridVertical,
 } = require("./javascript.js");
+
+//! Verify Coordinates fits on grid
+describe("Verify Coordinates horizontally", () => {
+  // Testing the Coordinates of the ship on the grid
+  // Check ship in 'F8', which is the first Node
+  test("Ship 4 long on 'G0' fits horizontally", () => {
+    expect(verifyCoordGridHorizontal("G0", 4)).toBe("G0");
+  });
+  // Check ship in 'H0', which is the first Node
+  test("Ship 4 long on 'H0' fits horizontally", () => {
+    expect(verifyCoordGridHorizontal("H0", 4)).toBe("G0");
+  });
+  // Check ship in 'J6', which is the first Node
+  test("Ship 2 long on 'J6' fits horizontally", () => {
+    expect(verifyCoordGridHorizontal("J6", 2)).toBe("I6");
+  });
+  // Check ship in 'B9', which is the first Node
+  test("Ship 3 long on 'B9' fits horizontally", () => {
+    expect(verifyCoordGridHorizontal("B9", 3)).toBe("B9");
+  });
+  // Check ship in 'H0', which is the first Node
+  test("Ship 3 long on 'H0' fits horizontally", () => {
+    expect(verifyCoordGridHorizontal("H0", 3)).toBe("H0");
+  });
+});
+
+//! Verify Coordinates fits on grid
+describe("Verify Coordinates Vertical", () => {
+  // Testing the Coordinates of the ship on the grid
+  // Check ship in 'F8', which is the first Node
+  test("Ship 4 long on 'F8' fits Vertical", () => {
+    expect(verifyCoordGridVertical("F8", 4)).toBe("F6");
+  });
+  // Check ship in 'F2', which is the first Node
+  test("Ship 4 long on 'F2' fits Vertical", () => {
+    expect(verifyCoordGridVertical("F2", 4)).toBe("F2");
+  });
+  // Check ship in 'F9', which is the first Node
+  test("Ship 2 long on 'F9' fits Vertical", () => {
+    expect(verifyCoordGridVertical("F9", 2)).toBe("F8");
+  });
+  // Check ship in 'B9', which is the first Node
+  test("Ship 3 long on 'B9' fits Vertical", () => {
+    expect(verifyCoordGridVertical("B9", 3)).toBe("B7");
+  });
+});
+
+//! Check and verify that coordinates fits on the grid
+describe("Check and verify grid placement", () => {
+  // Testing the Coordinates of the ship on the grid
+  // Place ship in 'F8', 'F9'
+  const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+  const arrY = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const arrXY = combCoordXY(arrX, arrY);
+  let board = new GameBoard(arrXY);
+  const node = board.placeShip("F8", "Yamato", 3, "V");
+  // Check ship in 'F8', which is the first Node
+  test("Check ship in 'F8'", () => {
+    const checkNode = board.find("F8");
+    expect(checkNode.ship).toMatchObject({
+      name: "Yamato",
+      length: 3,
+      health: 3,
+      sunken: false,
+    });
+  });
+  // Check ship in 'F9', which is the second Node
+  test("Check ship in 'F9'", () => {
+    const checkNode = board.find("F9");
+    expect(checkNode.ship).toMatchObject({
+      name: "Yamato",
+      length: 3,
+      health: 3,
+      sunken: false,
+    });
+  });
+});
 
 //! Add Big Ships to multiple Nodes Vertical
 describe("Place ship in multiple Nodes Vertical", () => {
   // Testing calculation of neigbor Coordinates on Nodes on creation
-  // "Place ship in 'A0', 'B0', 'C0', 'D0'"
+  // Place ship in 'A0', 'B0', 'C0', 'D0'
   const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
   const arrY = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   const arrXY = combCoordXY(arrX, arrY);
@@ -58,7 +137,7 @@ describe("Place ship in multiple Nodes Vertical", () => {
 //! Add Big Ships to multiple Nodes Horizontal
 describe("Place ship in multiple Nodes Horizontal", () => {
   // Testing calculation of neigbor Coordinates on Nodes on creation
-  // "Place ship in 'A0', 'B0', 'C0', 'D0'"
+  // Place ship in 'A0', 'B0', 'C0', 'D0'
   const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
   const arrY = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   const arrXY = combCoordXY(arrX, arrY);
