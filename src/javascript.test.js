@@ -9,9 +9,49 @@ const {
   calcNeigborVertical,
 } = require("./javascript.js");
 
+//! Calculate neigbor Node Coordinates
+describe("Neigbor Coordinates on Nodes", () => {
+  // Testing calculation of neigbor Coordinates on Nodes on creation
+  // Using semi-Caesar Cipher to create neigbor Coordinates
+  const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+  const arrY = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const arrXY = combCoordXY(arrX, arrY);
+  const board = new GameBoard(arrXY);
+  const node = board.find("A1");
+  test("Calculate neigborNodes on Node", () => {
+    expect(node.neigborNodes).toMatchObject({
+      topNeihbor: null,
+      botNeihbor: "A2",
+      leftNeihbor: null,
+      rightNeihbor: "B1",
+    });
+  });
+  // Using semi-Caesar Cipher to create neigbor Coordinates
+  const node2 = board.find("D5");
+  test("Calculate neigborNodes on Node", () => {
+    expect(node2.neigborNodes).toMatchObject({
+      topNeihbor: "D4",
+      botNeihbor: "D6",
+      leftNeihbor: "C5",
+      rightNeihbor: "E5",
+    });
+  });
+  // Using semi-Caesar Cipher to create neigbor Coordinates
+  const node3 = board.find("J10");
+  console.log(node3);
+  test("Calculate neigborNodes on Node", () => {
+    expect(node3.neigborNodes).toMatchObject({
+      topNeihbor: "J9",
+      botNeihbor: null,
+      leftNeihbor: "I10",
+      rightNeihbor: null,
+    });
+  });
+});
+
 //! Calculate neigbor Coordinates Vertical
 describe("Neigbor Coordinates Vertical", () => {
-  // Testing calculation of neigbor Coordinates on Nodes
+  // Testing calculation of neigbor Coordinates for Nodes
   // Using semi-Caesar Cipher to convert A1 to A2
   test("Convert from A1 to A2", () => {
     expect(calcNeigborVertical("A1", 1)).toBe("A2");
