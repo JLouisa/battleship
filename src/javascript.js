@@ -327,16 +327,10 @@ const turnManager = {
   },
 };
 
+//! DOM Caches
+
 // =====================Pseudo Code=======================
 /* 
-
-GameStart: console.log("It's Player's turn");
-The Player attacks: attack("A7")
-console.log("It's CPU's turn");
-The CPU attacks: CPU chose random from coordXYArray
-  removes coordXY from list
-  attack(coorXY)
-GameStart: console.log("It's Player's turn");
 
 
 */

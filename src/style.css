@@ -1,4 +1,91 @@
 h1 {
-  color: crimson;
+  color: black;
   text-align: center;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+nav {
+  height: 10vh;
+}
+
+nav,
+footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  background-color: green;
+  border-top: 2px solid grey;
+  height: 10vh;
+  min-width: 700px;
+}
+
+footer {
+  border-top: 2px solid grey;
+}
+
+.main {
+  height: 80vh;
+  background-color: lightcyan;
+  display: grid;
+  grid-template: 1fr / 2.5fr repeat(10, 1fr) 2.5fr;
+}
+
+.side {
+  background-color: yellow;
+}
+
+.sideLeft {
+  grid-area: 1/1/2/2;
+}
+.sideRight {
+  grid-area: 1/12/2/13;
+}
+
+.mid {
+  background-color: red;
+  grid-area: 1/2/2/12;
+  min-width: 980px;
+  display: flex;
+}
+
+.participant {
+  background-color: antiquewhite;
+  border: 1px solid black;
+  flex: 1;
+  display: grid;
+  grid-template: 1fr repeat(8, 1fr) 1fr / 1fr;
+  min-width: 500px;
+}
+
+.participant > div {
+  border: 1px solid black;
+}
+
+.title {
+  text-align: center;
+}
+
+.grid {
+  background-color: blue;
+  grid-area: 2/1/10/2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ground {
+  text-align: center;
+}
+
+.box {
+  border: 1px solid black;
+  height: 500px;
+  width: 500px;
+  display: grid;
+  grid-template: repeat(10, 1fr) / repeat(10, 1fr);
 }
