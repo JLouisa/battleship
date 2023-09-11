@@ -125,6 +125,7 @@ class GameBoard {
     this.coordXY = "Head";
     this.root = createTree(arrXY, 0, arrXY.length - 1);
     this.missedAttackArr = [];
+    this.hitAttackArr = [];
     this.allShipArr = [];
   }
   // Find node in BST
@@ -180,10 +181,13 @@ class GameBoard {
     let node = this.find(coordXY);
     if (node.ship) {
       node.ship.hit();
-      console.log("Nice hit!");
+      this.hitAttackArr.push(node.coordXY);
+      console.log(`${turnManager.currentPlayer} has hit a ship. Nice hit!`);
+      // console.log(`It's ${turnManager.currentPlayer}'s turn`);
     } else {
       this.missedAttackArr.push(node.coordXY);
-      console.log("You missed");
+      console.log(`${turnManager.currentPlayer} has missed`);
+      turnManager.switchTurn();
     }
     this.allShipSunkenCheck(this.allShipArr);
   }
@@ -194,6 +198,7 @@ class GameBoard {
         allSunken = true;
       } else allSunken = false;
     });
+    console.log("All ships are sunken!");
     return allSunken;
   }
 }
@@ -257,8 +262,8 @@ let arrCPU = [...combCoordXY(arrX, arrY)];
 let gameBoardOne = new GameBoard(combCoordXY(arrX, arrY));
 let gameBoardTwo = new GameBoard(combCoordXY(arrX, arrY));
 
-shipGridArr1.forEach((ship) => gameBoardOne.placeShip(ship));
-shipGridArr2.forEach((ship) => gameBoardTwo.placeShip(ship));
+shipGridArr1.forEach((ship) => gameBoardOne.placeShip(ship[0], ship[1], ship[2], ship[3]));
+shipGridArr2.forEach((ship) => gameBoardTwo.placeShip(ship[0], ship[1], ship[2], ship[3]));
 // ^^===========================================^^
 
 // Constants to represent players
@@ -288,45 +293,38 @@ const attackCPU = (arr) => {
   } else {
     // If it's a hit, pass the attack coordinates to the playersTurn function
     console.log(`CPU attacked Coordinates ${arr[index]}`);
-    playersTurn(CPUP, arr.splice(index, 1));
+    gameBoardOne.receiveAttack(arr.splice(index, 1));
+    // turnManager.switchTurn();
+    console.log(`It's ${turnManager.currentPlayer}'s turn`);
   }
 };
 
 // Function for player's attack
 const attack = (coordXY) => {
-  if (gameBoardTwo.missedAttackArr.includes(coordXY)) {
+  if (gameBoardTwo.missedAttackArr.includes(coordXY) || gameBoardTwo.hitAttackArr.includes(coordXY)) {
     // Check if the player already attacked this coordinate
     return "You already attacked this coordinate, please choose another coordinate";
   } else {
     // If it's a valid attack, pass the attack coordinates to the playersTurn function
-    playersTurn(PLAYER, coordXY);
+    gameBoardTwo.receiveAttack(coordXY);
 
-    // Schedule the CPU's turn after a delay of 2000 milliseconds (2 seconds)
-    // console.log("It's CPU's turn");
-    setTimeout(() => {
-      attackCPU(arrCPU);
-    }, 2000);
+    console.log(`It's ${turnManager.currentPlayer}'s turn`);
+    if (turnManager.currentPlayer === CPUP) {
+      // Schedule the CPU's turn after a delay of 2000 milliseconds (2 seconds)
+      setTimeout(() => {
+        attackCPU(arrCPU);
+      }, 2000);
+    }
   }
 };
 
-// Decide whose turn it is and update the game board
-const playersTurn = (isPlayerTurn, coordXY) => {
-  switch (isPlayerTurn) {
-    case "PLAYER": {
-      // Handle the player's turn
-      gameBoardOne.receiveAttack(coordXY);
-      console.log("It's CPU's turn");
-      playerOne.turn = false; // Update the turn status
-      break;
-    }
-    case "CPU": {
-      // Handle the CPU's turn
-      gameBoardTwo.receiveAttack(coordXY);
-      console.log("It's Player's turn");
-      playerOne.turn = true; // Update the turn status
-      break;
-    }
-  }
+//Turn Logic Module
+const turnManager = {
+  currentPlayer: PLAYER, // Initialize with the starting player
+  switchTurn: function () {
+    // Logic to switch the current player
+    this.currentPlayer = this.currentPlayer === PLAYER ? CPUP : PLAYER;
+  },
 };
 
 // =====================Pseudo Code=======================
