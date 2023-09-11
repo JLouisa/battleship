@@ -199,16 +199,63 @@ class GameBoard {
 // =======================Player=======================
 //! Player
 class Player {
-  constructor(name) {
+  constructor(name, turn) {
     this.name = name;
+    this.turn = turn;
   }
 }
 
-const player1 = new Player("Player 1");
-const player2 = new Player("Player 2");
-
 const startUpGame = () => {
-  let gameBoard = new GameBoard(combCoordXY(arrX, arrY));
+  const shipOne = ["D9", "Dreadnought", 4, "H"];
+  const shipBigOne = ["B7", "Bretagne", 3, "H"];
+  const shipBigTwo = ["J2", "Mikasa", 3, "V"];
+  const shipMediumOne = ["E0", "Kongo", 2, "H"];
+  const shipMediumTwo = ["A1", "Yamato", 2, "H"];
+  const shipSmallOne = ["H1", "King", 1, "H"];
+  const shipSmallTwo = ["G4", "Monitor", 1, "H"];
+  const shipSamllThree = ["B4", "Nagato", 1, "H"];
+
+  const shipGridArr1 = [
+    shipOne,
+    shipBigOne,
+    shipBigTwo,
+    shipBigTwo,
+    shipMediumOne,
+    shipMediumTwo,
+    shipSmallOne,
+    shipSmallTwo,
+    shipSamllThree,
+  ];
+
+  const shipOne2 = ["D8", "Dreadnought", 4, "H"];
+  const shipBigOne2 = ["J0", "Bretagne", 3, "V"];
+  const shipBigTwo2 = ["G2", "Mikasa", 3, "V"];
+  const shipMediumOne2 = ["E3", "Kongo", 2, "V"];
+  const shipMediumTwo2 = ["A1", "Yamato", 2, "H"];
+  const shipSmallOne2 = ["H0", "King", 1, "H"];
+  const shipSmallTwo2 = ["E1", "Monitor", 1, "H"];
+  const shipSamllThree2 = ["I8", "Nagato", 1, "H"];
+
+  const shipGridArr2 = [
+    shipOne2,
+    shipBigOne2,
+    shipBigTwo2,
+    shipBigTwo2,
+    shipMediumOne2,
+    shipMediumTwo2,
+    shipSmallOne2,
+    shipSmallTwo2,
+    shipSamllThree2,
+  ];
+
+  const playerOne = new Player("Player 1", true);
+  const playerTwo = new Player("Player 2", false);
+
+  let gameBoardOne = new GameBoard(combCoordXY(arrX, arrY));
+  let gameBoardTwo = new GameBoard(combCoordXY(arrX, arrY));
+
+  shipGridArr1.forEach((ship) => gameBoardOne.placeShip(ship));
+  shipGridArr2.forEach((ship) => gameBoardTwo.placeShip(ship));
 };
 // vv==================Export=======================vv
 module.exports = {
