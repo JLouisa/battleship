@@ -180,8 +180,10 @@ class GameBoard {
     let node = this.find(coordXY);
     if (node.ship) {
       node.ship.hit();
+      console.log("Nice hit!");
     } else {
       this.missedAttackArr.push(node.coordXY);
+      console.log("You missed");
     }
     this.allShipSunkenCheck(this.allShipArr);
   }
@@ -196,7 +198,6 @@ class GameBoard {
   }
 }
 
-// =======================Player=======================
 //! Player
 class Player {
   constructor(name, turn) {
@@ -205,58 +206,136 @@ class Player {
   }
 }
 
-const startUpGame = () => {
-  const shipOne = ["D9", "Dreadnought", 4, "H"];
-  const shipBigOne = ["B7", "Bretagne", 3, "H"];
-  const shipBigTwo = ["J2", "Mikasa", 3, "V"];
-  const shipMediumOne = ["E0", "Kongo", 2, "H"];
-  const shipMediumTwo = ["A1", "Yamato", 2, "H"];
-  const shipSmallOne = ["H1", "King", 1, "H"];
-  const shipSmallTwo = ["G4", "Monitor", 1, "H"];
-  const shipSamllThree = ["B4", "Nagato", 1, "H"];
+// =======================Start Up=======================
+const shipOne = ["D9", "Dreadnought", 4, "H"];
+const shipBigOne = ["B7", "Bretagne", 3, "H"];
+const shipBigTwo = ["J2", "Mikasa", 3, "V"];
+const shipMediumOne = ["E0", "Kongo", 2, "H"];
+const shipMediumTwo = ["A1", "Yamato", 2, "H"];
+const shipSmallOne = ["H1", "King", 1, "H"];
+const shipSmallTwo = ["G4", "Monitor", 1, "H"];
+const shipSamllThree = ["B4", "Nagato", 1, "H"];
 
-  const shipGridArr1 = [
-    shipOne,
-    shipBigOne,
-    shipBigTwo,
-    shipBigTwo,
-    shipMediumOne,
-    shipMediumTwo,
-    shipSmallOne,
-    shipSmallTwo,
-    shipSamllThree,
-  ];
+const shipGridArr1 = [
+  shipOne,
+  shipBigOne,
+  shipBigTwo,
+  shipBigTwo,
+  shipMediumOne,
+  shipMediumTwo,
+  shipSmallOne,
+  shipSmallTwo,
+  shipSamllThree,
+];
 
-  const shipOne2 = ["D8", "Dreadnought", 4, "H"];
-  const shipBigOne2 = ["J0", "Bretagne", 3, "V"];
-  const shipBigTwo2 = ["G2", "Mikasa", 3, "V"];
-  const shipMediumOne2 = ["E3", "Kongo", 2, "V"];
-  const shipMediumTwo2 = ["A1", "Yamato", 2, "H"];
-  const shipSmallOne2 = ["H0", "King", 1, "H"];
-  const shipSmallTwo2 = ["E1", "Monitor", 1, "H"];
-  const shipSamllThree2 = ["I8", "Nagato", 1, "H"];
+const shipOne2 = ["D8", "Dreadnought", 4, "H"];
+const shipBigOne2 = ["J0", "Bretagne", 3, "V"];
+const shipBigTwo2 = ["G2", "Mikasa", 3, "V"];
+const shipMediumOne2 = ["E3", "Kongo", 2, "V"];
+const shipMediumTwo2 = ["A1", "Yamato", 2, "H"];
+const shipSmallOne2 = ["H0", "King", 1, "H"];
+const shipSmallTwo2 = ["E1", "Monitor", 1, "H"];
+const shipSamllThree2 = ["I8", "Nagato", 1, "H"];
 
-  const shipGridArr2 = [
-    shipOne2,
-    shipBigOne2,
-    shipBigTwo2,
-    shipBigTwo2,
-    shipMediumOne2,
-    shipMediumTwo2,
-    shipSmallOne2,
-    shipSmallTwo2,
-    shipSamllThree2,
-  ];
+const shipGridArr2 = [
+  shipOne2,
+  shipBigOne2,
+  shipBigTwo2,
+  shipBigTwo2,
+  shipMediumOne2,
+  shipMediumTwo2,
+  shipSmallOne2,
+  shipSmallTwo2,
+  shipSamllThree2,
+];
 
-  const playerOne = new Player("Player 1", true);
-  const playerTwo = new Player("Player 2", false);
+const playerOne = new Player("Player 1", true);
+const CPU = new Player("CPU", false);
 
-  let gameBoardOne = new GameBoard(combCoordXY(arrX, arrY));
-  let gameBoardTwo = new GameBoard(combCoordXY(arrX, arrY));
+let arrCPU = [...combCoordXY(arrX, arrY)];
 
-  shipGridArr1.forEach((ship) => gameBoardOne.placeShip(ship));
-  shipGridArr2.forEach((ship) => gameBoardTwo.placeShip(ship));
+let gameBoardOne = new GameBoard(combCoordXY(arrX, arrY));
+let gameBoardTwo = new GameBoard(combCoordXY(arrX, arrY));
+
+shipGridArr1.forEach((ship) => gameBoardOne.placeShip(ship));
+shipGridArr2.forEach((ship) => gameBoardTwo.placeShip(ship));
+// ^^===========================================^^
+
+//! Attacking
+console.log("It's Player's turn");
+console.log("Type attack('Coordinates')");
+
+// Function to generate a random index between min and max (inclusive)
+const getRandomIndex = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 };
+
+// Function for CPU's attack
+const attackCPU = (arr) => {
+  // Get a random index in the attack array
+  let index = getRandomIndex(0, arr.length - 1);
+
+  // Check if the CPU's attack is a miss
+  if (gameBoardOne.missedAttackArr.includes(arr[index])) {
+    // If it's a miss, recursively call attackCPU until a valid attack is found
+    return attackCPU(arr);
+  } else {
+    // If it's a hit, pass the attack coordinates to the playersTurn function
+    playersTurn(true, arr.splice(index, 1));
+  }
+};
+
+// Function for player's attack
+const attack = (coordXY) => {
+  if (gameBoardTwo.missedAttackArr.includes(coordXY)) {
+    // Check if the player already attacked this coordinate
+    return "You already attacked this coordinate, please choose another coordinate";
+  } else {
+    // If it's a valid attack, pass the attack coordinates to the playersTurn function
+    playersTurn(true, coordXY);
+
+    // Schedule the CPU's turn after a delay of 2000 milliseconds (2 seconds)
+    setTimeout(() => {
+      attackCPU(arrCPU);
+    }, 2000);
+  }
+};
+
+// Decide whose turn it is and update the game board
+const playersTurn = (isPlayerTurn, coordXY) => {
+  switch (isPlayerTurn) {
+    case true: {
+      // Handle the player's turn
+      gameBoardOne.receiveAttack(coordXY);
+      console.log("It's CPU's turn");
+      playerOne.turn = false; // Update the turn status
+      break;
+    }
+    case false: {
+      // Handle the CPU's turn
+      gameBoardTwo.receiveAttack(coordXY);
+      console.log("It's Player's turn");
+      playerOne.turn = true; // Update the turn status
+      break;
+    }
+  }
+};
+
+// =====================Pseudo Code=======================
+/* 
+
+GameStart: console.log("It's Player's turn");
+The Player attacks: attack("A7")
+console.log("It's CPU's turn");
+The CPU attacks: CPU chose random from coordXYArray
+  removes coordXY from list
+  attack(coorXY)
+GameStart: console.log("It's Player's turn");
+
+
+*/
 // vv==================Export=======================vv
 module.exports = {
   verifyCoordGridVertical,
