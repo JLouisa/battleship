@@ -261,6 +261,10 @@ shipGridArr1.forEach((ship) => gameBoardOne.placeShip(ship));
 shipGridArr2.forEach((ship) => gameBoardTwo.placeShip(ship));
 // ^^===========================================^^
 
+// Constants to represent players
+const PLAYER = "PLAYER";
+const CPUP = "CPU";
+
 //! Attacking
 console.log("It's Player's turn");
 console.log("Type attack('Coordinates')");
@@ -283,7 +287,8 @@ const attackCPU = (arr) => {
     return attackCPU(arr);
   } else {
     // If it's a hit, pass the attack coordinates to the playersTurn function
-    playersTurn(true, arr.splice(index, 1));
+    console.log(`CPU attacked Coordinates ${arr[index]}`);
+    playersTurn(CPUP, arr.splice(index, 1));
   }
 };
 
@@ -294,9 +299,10 @@ const attack = (coordXY) => {
     return "You already attacked this coordinate, please choose another coordinate";
   } else {
     // If it's a valid attack, pass the attack coordinates to the playersTurn function
-    playersTurn(true, coordXY);
+    playersTurn(PLAYER, coordXY);
 
     // Schedule the CPU's turn after a delay of 2000 milliseconds (2 seconds)
+    // console.log("It's CPU's turn");
     setTimeout(() => {
       attackCPU(arrCPU);
     }, 2000);
@@ -306,14 +312,14 @@ const attack = (coordXY) => {
 // Decide whose turn it is and update the game board
 const playersTurn = (isPlayerTurn, coordXY) => {
   switch (isPlayerTurn) {
-    case true: {
+    case "PLAYER": {
       // Handle the player's turn
       gameBoardOne.receiveAttack(coordXY);
       console.log("It's CPU's turn");
       playerOne.turn = false; // Update the turn status
       break;
     }
-    case false: {
+    case "CPU": {
       // Handle the CPU's turn
       gameBoardTwo.receiveAttack(coordXY);
       console.log("It's Player's turn");
@@ -337,18 +343,18 @@ GameStart: console.log("It's Player's turn");
 
 */
 // vv==================Export=======================vv
-module.exports = {
-  verifyCoordGridVertical,
-  verifyCoordGridHorizontal,
-  calcNeigborVertical,
-  convert2Unicode,
-  calcNeigborHorizontal,
-  objMock,
-  ShipCreator,
-  GameBoard,
-  combCoordXY,
-  compareCoords,
-  arrX,
-  arrY,
-};
+// module.exports = {
+//   verifyCoordGridVertical,
+//   verifyCoordGridHorizontal,
+//   calcNeigborVertical,
+//   convert2Unicode,
+//   calcNeigborHorizontal,
+//   objMock,
+//   ShipCreator,
+//   GameBoard,
+//   combCoordXY,
+//   compareCoords,
+//   arrX,
+//   arrY,
+// };
 // export { sumAll, multiAll, objMock, ships };
