@@ -1,3 +1,7 @@
+:root {
+  font-family: inherit;
+}
+
 h1 {
   color: black;
   text-align: center;
@@ -7,6 +11,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
+  margin: 0;
 }
 
 nav {
@@ -25,14 +30,13 @@ footer {
 }
 
 .main {
-  background-color: lightcyan;
   display: grid;
   grid-template: 1fr / 2.5fr repeat(10, 1fr) 2.5fr;
 }
 
-.side {
+/* .side {
   background-color: yellow;
-}
+} */
 
 .sideLeft {
   grid-area: 1/1/2/2;
@@ -42,7 +46,6 @@ footer {
 }
 
 .mid {
-  background-color: red;
   grid-area: 1/2/2/12;
   min-width: 980px;
   display: flex;
@@ -66,11 +69,11 @@ footer {
 }
 
 .grid {
-  background-color: blue;
   grid-area: 2/1/10/2;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 2em;
 }
 
 .ground {
@@ -83,15 +86,6 @@ footer {
   width: 500px;
   display: grid;
   grid-template: repeat(11, 1fr) / repeat(11, 1fr);
-}
-
-.box > div {
-  border: 1px solid black;
-}
-
-.box > div:hover {
-  background-color: lightgreen;
-  transform: scale(1.05);
 }
 
 .box {
@@ -125,4 +119,27 @@ footer {
   border: none;
   pointer-events: none;
   cursor: not-allowed;
+}
+
+.playerGridContent,
+.CPUGridContent {
+  border: 1px solid black;
+  grid-area: 2/2/12/12;
+  display: grid;
+  grid-template: repeat(10, 1fr) / repeat(10, 1fr);
+}
+
+.playerGridContent > div,
+.CPUGridContent > div {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+.CPUGridContent > div:hover {
+  background-color: lightgreen;
+  transform: scale(1.05);
 }

@@ -13,6 +13,9 @@ const objMock = (obj) => {
 const playerBoxEl = document.querySelector(".playerBox");
 const CPUBoxEl = document.querySelector(".CPUBox");
 
+const playerGridContentEl = document.querySelector(".playerGridContent");
+const CPUGridContentEl = document.querySelector(".CPUGridContent");
+
 // ^^================================================^^
 
 const combCoordXY = (arrX, arrY) => {
@@ -129,20 +132,6 @@ class ShipCreator {
   }
 }
 
-function getInOrder(item, arr) {
-  if (item === null) {
-    return;
-  } else {
-    getInOrder(item.left, arr);
-    item.DOM.addEventListener("click", () => {
-      console.log(item.coordXY);
-    });
-    arr.push(item);
-    getInOrder(item.right, arr);
-    return arr;
-  }
-}
-
 //! Create GameBoard Class
 class GameBoard {
   constructor(arrXY) {
@@ -157,12 +146,35 @@ class GameBoard {
   inOrder() {
     let current = this.root;
     let traversal = [];
-    return getInOrder(current, traversal);
+    return this.getInOrder(current, traversal);
+  }
+  getInOrder(node, arr) {
+    if (node === null) {
+      return;
+    } else {
+      this.getInOrder(node.left, arr);
+      node.DOM.addEventListener("click", () => {
+        console.log(node.coordXY);
+        attack(node.coordXY);
+      });
+      arr.push(node);
+      this.getInOrder(node.right, arr);
+      return arr;
+    }
   }
   // Render the array in DOM
   render(board) {
     this.inOrderArr.forEach((node) => {
       board.appendChild(node.DOM);
+    });
+    this.renderContent();
+  }
+  renderContent() {
+    this.missedAttackArr.forEach((coordXY) => {
+      const node = this.find(coordXY);
+      if (!node.DOM.textContent) {
+        node.DOM.textContent = "X";
+      }
     });
   }
   // Find node in BST
@@ -229,14 +241,12 @@ class GameBoard {
     this.allShipSunkenCheck(this.allShipArr);
   }
   allShipSunkenCheck(arr) {
-    let allSunken = true;
-    arr.forEach((ship) => {
-      if (ship.sunken) {
-        allSunken = true;
-      } else allSunken = false;
-    });
-    console.log("All ships are sunken!");
-    return allSunken;
+    if (arr.every((ship) => ship.sunken === true)) {
+      console.log("All ships are sunken!");
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 
