@@ -6,30 +6,25 @@ h1 {
 body {
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 nav {
-  height: 10vh;
-}
-
-nav,
-footer {
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
   background-color: green;
   border-top: 2px solid grey;
-  height: 10vh;
   min-width: 700px;
 }
 
 footer {
+  background-color: green;
   border-top: 2px solid grey;
 }
 
 .main {
-  height: 80vh;
   background-color: lightcyan;
   display: grid;
   grid-template: 1fr / 2.5fr repeat(10, 1fr) 2.5fr;
@@ -58,7 +53,7 @@ footer {
   border: 1px solid black;
   flex: 1;
   display: grid;
-  grid-template: 1fr repeat(8, 1fr) 1fr / 1fr;
+  grid-template: 1fr repeat(6, 1fr) 1fr / 1fr;
   min-width: 500px;
 }
 
@@ -87,5 +82,47 @@ footer {
   height: 500px;
   width: 500px;
   display: grid;
-  grid-template: repeat(10, 1fr) / repeat(10, 1fr);
+  grid-template: repeat(11, 1fr) / repeat(11, 1fr);
+}
+
+.box > div {
+  border: 1px solid black;
+}
+
+.box > div:hover {
+  background-color: lightgreen;
+  transform: scale(1.05);
+}
+
+.box {
+  border: none;
+}
+
+.columnGrid {
+  grid-area: 1/1/2/12;
+  display: grid;
+  grid-template: 1fr / repeat(11, 1fr);
+}
+
+.rowGrid {
+  grid-area: 2/1/12/2;
+  display: grid;
+  grid-template: repeat(10, 1fr) / 1fr;
+}
+
+.columnGrid > div,
+.rowGrid > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
+
+#playerColumnID,
+#playerRowID,
+#CPUColumnID,
+#CPURowID {
+  border: none;
+  pointer-events: none;
+  cursor: not-allowed;
 }

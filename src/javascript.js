@@ -7,9 +7,13 @@ const objMock = (obj) => {
 };
 // ^^=======Mock Test=======^^
 
-//! Array Coordinates
-const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-const arrY = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+// ^^================================================^^
+
+//! DOM Caches
+const playerBoxEl = document.querySelector(".playerBox");
+const CPUBoxEl = document.querySelector(".CPUBox");
+
+// ^^================================================^^
 
 const combCoordXY = (arrX, arrY) => {
   const arrComb = [];
@@ -18,6 +22,11 @@ const combCoordXY = (arrX, arrY) => {
   });
   return arrComb;
 };
+
+//! Array Coordinates
+const arrX = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+const arrY = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+const arrXY = [...combCoordXY(arrX, arrY)];
 
 //! Create the BST module
 const createTree = (arrXY, beginIndex, lastIndex) => {
@@ -89,6 +98,7 @@ class Node {
     this.left = null;
     this.right = null;
     this.ship = null;
+    this.DOM = document.createElement("div");
     this.neigborNodes = {
       topNeihbor: calcNeigborVertical(coordXY, -1),
       botNeihbor: calcNeigborVertical(coordXY, 1),
@@ -119,6 +129,20 @@ class ShipCreator {
   }
 }
 
+function getInOrder(item, arr) {
+  if (item === null) {
+    return;
+  } else {
+    getInOrder(item.left, arr);
+    item.DOM.addEventListener("click", () => {
+      console.log(item.coordXY);
+    });
+    arr.push(item);
+    getInOrder(item.right, arr);
+    return arr;
+  }
+}
+
 //! Create GameBoard Class
 class GameBoard {
   constructor(arrXY) {
@@ -127,6 +151,19 @@ class GameBoard {
     this.missedAttackArr = [];
     this.hitAttackArr = [];
     this.allShipArr = [];
+    this.inOrderArr = [...this.inOrder()];
+  }
+  // Create inOrder Array
+  inOrder() {
+    let current = this.root;
+    let traversal = [];
+    return getInOrder(current, traversal);
+  }
+  // Render the array in DOM
+  render(board) {
+    this.inOrderArr.forEach((node) => {
+      board.appendChild(node.DOM);
+    });
   }
   // Find node in BST
   find(coordXY, current = this.root) {
@@ -259,8 +296,8 @@ const CPU = new Player("CPU", false);
 
 let arrCPU = [...combCoordXY(arrX, arrY)];
 
-let gameBoardOne = new GameBoard(combCoordXY(arrX, arrY));
-let gameBoardTwo = new GameBoard(combCoordXY(arrX, arrY));
+let gameBoardOne = new GameBoard(arrXY);
+let gameBoardTwo = new GameBoard(arrXY);
 
 shipGridArr1.forEach((ship) => gameBoardOne.placeShip(ship[0], ship[1], ship[2], ship[3]));
 shipGridArr2.forEach((ship) => gameBoardTwo.placeShip(ship[0], ship[1], ship[2], ship[3]));
@@ -326,8 +363,6 @@ const turnManager = {
     this.currentPlayer = this.currentPlayer === PLAYER ? CPUP : PLAYER;
   },
 };
-
-//! DOM Caches
 
 // =====================Pseudo Code=======================
 /* 
