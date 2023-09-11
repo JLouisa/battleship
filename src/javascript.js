@@ -163,6 +163,7 @@ class GameBoard {
       }
     }
   }
+  // PlaceShip DRY
   createMultipleShips(current, ship, stats, neihbor) {
     for (let i = 0; i < stats; i++) {
       let node = this.find(current);
@@ -182,6 +183,7 @@ class GameBoard {
     } else {
       this.missedAttackArr.push(node.coordXY);
     }
+    this.allShipSunkenCheck(this.allShipArr);
   }
   allShipSunkenCheck(arr) {
     let allSunken = true;
@@ -194,6 +196,20 @@ class GameBoard {
   }
 }
 
+// =======================Player=======================
+//! Player
+class Player {
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+const player1 = new Player("Player 1");
+const player2 = new Player("Player 2");
+
+const startUpGame = () => {
+  let gameBoard = new GameBoard(combCoordXY(arrX, arrY));
+};
 // vv==================Export=======================vv
 module.exports = {
   verifyCoordGridVertical,
