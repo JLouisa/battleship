@@ -147,8 +147,9 @@ class ShipCreator {
 
 //! Create GameBoard Class
 class GameBoard {
-  constructor(arrXY) {
+  constructor(arrXY, user) {
     this.coordXY = "Head";
+    this.user = user;
     this.root = createTree(arrXY, 0, arrXY.length - 1);
     this.missedAttackArr = [];
     this.hitAttackArr = [];
@@ -167,9 +168,11 @@ class GameBoard {
       return;
     } else {
       this.getInOrder(node.left, arr);
-      node.DOM.addEventListener("click", () => {
-        gameLoop(node);
-      });
+      if (this.user) {
+        node.DOM.addEventListener("click", () => {
+          gameLoop(node);
+        });
+      }
       arr.push(node);
       this.getInOrder(node.right, arr);
       return arr;
@@ -267,10 +270,11 @@ class GameBoard {
   }
   allShipSunkenCheck() {
     if (this.allShipArr.every((ship) => ship.sunken === true)) {
-      gameOver(turnManager.currentPlayer);
-      return true;
-    } else {
-      return false;
+      let theWinner = turnManager.currentPlayer.slice();
+      turnManager.currentPlayer = "end";
+      setTimeout(() => {
+        gameOver(theWinner);
+      }, 1000);
     }
   }
   reset() {
@@ -294,7 +298,6 @@ function gameOver(winner) {
   winnerEl.forEach((win) => (win.textContent = winner));
   console.log("All ships are sunken!");
   console.log(`${winnerEl[0].textContent} has won the game!`);
-  turnManager.currentPlayer = "end";
 }
 
 function gameLoop(node) {
@@ -322,6 +325,8 @@ function endGameReset() {
   gameBoardTwo.render(CPUGridContentEl);
 
   turnManager.currentPlayer = PLAYER;
+  arrCPU = [];
+  arrCPU = [...combCoordXY(arrX, arrY)];
 }
 
 //! Player
@@ -378,8 +383,8 @@ const CPU = new Player("CPU", false);
 
 let arrCPU = [...combCoordXY(arrX, arrY)];
 
-let gameBoardOne = new GameBoard(arrXY);
-let gameBoardTwo = new GameBoard(arrXY);
+let gameBoardOne = new GameBoard(arrXY, false);
+let gameBoardTwo = new GameBoard(arrXY, true);
 
 shipGridArr1.forEach((ship) => gameBoardOne.placeShip(ship[0], ship[1], ship[2], ship[3]));
 shipGridArr2.forEach((ship) => gameBoardTwo.placeShip(ship[0], ship[1], ship[2], ship[3]));
