@@ -250,12 +250,13 @@ class GameBoard {
       console.log(`${turnManager.currentPlayer} has missed`);
       turnManager.switchTurn();
     }
-    this.allShipSunkenCheck(this.allShipArr);
     this.renderContent();
+    this.allShipSunkenCheck();
   }
-  allShipSunkenCheck(arr) {
-    if (arr.every((ship) => ship.sunken === true)) {
+  allShipSunkenCheck() {
+    if (this.allShipArr.every((ship) => ship.sunken === true)) {
       console.log("All ships are sunken!");
+      endGameReset(turnManager.currentPlayer);
       return true;
     } else {
       return false;
@@ -272,6 +273,12 @@ function gameLoop(node) {
   } else {
     attackCPU(arrCPU);
   }
+}
+
+function endGameReset(winner) {
+  console.log(`${winner} has won the game!`);
+  gameBoardOne;
+  gameBoardTwo;
 }
 
 //! Player
@@ -296,7 +303,6 @@ const shipGridArr1 = [
   shipOne,
   shipBigOne,
   shipBigTwo,
-  shipBigTwo,
   shipMediumOne,
   shipMediumTwo,
   shipSmallOne,
@@ -316,7 +322,6 @@ const shipSamllThree2 = ["I8", "Nagato", 1, "H"];
 const shipGridArr2 = [
   shipOne2,
   shipBigOne2,
-  shipBigTwo2,
   shipBigTwo2,
   shipMediumOne2,
   shipMediumTwo2,
