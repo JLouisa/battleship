@@ -154,8 +154,8 @@ class GameBoard {
     } else {
       this.getInOrder(node.left, arr);
       node.DOM.addEventListener("click", () => {
-        console.log(node.coordXY);
-        attack(node.coordXY);
+        // attack(node.coordXY);
+        gameLoop(node);
       });
       arr.push(node);
       this.getInOrder(node.right, arr);
@@ -232,13 +232,13 @@ class GameBoard {
       node.ship.hit();
       this.hitAttackArr.push(node.coordXY);
       console.log(`${turnManager.currentPlayer} has hit a ship. Nice hit!`);
-      // console.log(`It's ${turnManager.currentPlayer}'s turn`);
     } else {
       this.missedAttackArr.push(node.coordXY);
       console.log(`${turnManager.currentPlayer} has missed`);
       turnManager.switchTurn();
     }
     this.allShipSunkenCheck(this.allShipArr);
+    this.renderContent();
   }
   allShipSunkenCheck(arr) {
     if (arr.every((ship) => ship.sunken === true)) {
@@ -247,6 +247,15 @@ class GameBoard {
     } else {
       return false;
     }
+  }
+}
+
+function gameLoop(node) {
+  console.log(node.coordXY);
+  if (turnManager.currentPlayer === PLAYER) {
+    attack(node.coordXY);
+  } else {
+    attackCPU(arrCPU);
   }
 }
 
@@ -343,6 +352,12 @@ const attackCPU = (arr) => {
     gameBoardOne.receiveAttack(arr.splice(index, 1));
     // turnManager.switchTurn();
     console.log(`It's ${turnManager.currentPlayer}'s turn`);
+    if (turnManager.currentPlayer === CPUP) {
+      // Schedule the CPU's turn after a delay of 2000 milliseconds (2 seconds)
+      setTimeout(() => {
+        attackCPU(arrCPU);
+      }, 2000);
+    }
   }
 };
 
@@ -374,11 +389,11 @@ const turnManager = {
   },
 };
 
-// =====================Pseudo Code=======================
-/* 
+// =====================Start Game=======================
 
+gameBoardTwo.render(CPUGridContentEl);
+gameBoardOne.render(playerGridContentEl);
 
-*/
 // vv==================Export=======================vv
 // module.exports = {
 //   verifyCoordGridVertical,
