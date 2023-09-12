@@ -166,7 +166,7 @@ footer {
 }
 
 .missMyShip {
-  background-color: rgba(150, 150, 150, 0.668);
+  background-color: rgb(233, 220, 220);
 }
 
 button {
@@ -216,7 +216,13 @@ button {
   padding: 0.5em 1em;
   white-space: nowrap;
   border: 0;
-  transition: box-shadow 0.2s;
+}
+
+.styleBtn:hover {
+  transform: scale(1.05);
+}
+.styleBtn:active {
+  transform: scale(0.95);
 }
 
 #newGame {
