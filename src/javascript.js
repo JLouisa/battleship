@@ -21,6 +21,9 @@ const winnerEl = document.querySelectorAll(".winner");
 const winTextEl = document.getElementById("winText");
 
 const newGameBtn = document.getElementById("newGame");
+const randomBtn = document.getElementById("randomBtn");
+const resetBtn = document.getElementById("resetBtn");
+const startBtn = document.getElementById("startBtn");
 
 // ^^================================================^^
 
@@ -29,7 +32,11 @@ newGameBtn.addEventListener("click", () => {
   winningBoardEl.style.display = "none";
   endGameReset();
 });
+// randomBtn.addEventListener("click", );
+// startBtn.addEventListener("click", );
+resetBtn.addEventListener("click", endGameReset);
 
+//! Combine array X and array Y
 const combCoordXY = (arrX, arrY) => {
   const arrComb = [];
   arrX.forEach((elementX) => {
