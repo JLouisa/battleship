@@ -256,7 +256,8 @@ class GameBoard {
   allShipSunkenCheck() {
     if (this.allShipArr.every((ship) => ship.sunken === true)) {
       console.log("All ships are sunken!");
-      endGameReset(turnManager.currentPlayer);
+      turnManager.currentPlayer = "end";
+      // endGameReset(turnManager.currentPlayer);
       return true;
     } else {
       return false;
@@ -271,6 +272,8 @@ class GameBoard {
     this.inOrderArr = [...this.inOrder()];
   }
 }
+
+// let yourturn = true;
 
 function gameLoop(node) {
   console.log(node.coordXY);
@@ -390,6 +393,10 @@ const getRandomIndex = (min, max) => {
 
 // Function for CPU's attack
 const attackCPU = (arr) => {
+  // Check if it's the CPU's turn
+  if (turnManager.currentPlayer !== CPUP) {
+    return;
+  }
   // Get a random index in the attack array
   let index = getRandomIndex(0, arr.length - 1);
 
@@ -418,7 +425,12 @@ const attack = (coordXY) => {
   if (gameBoardTwo.missedAttackArr.includes(coordXY) || gameBoardTwo.hitAttackArr.includes(coordXY)) {
     // Check if the player already attacked this coordinate
     return "You already attacked this coordinate, please choose another coordinate";
-  } else {
+  }
+  // Check if it's the player's turn
+  if (turnManager.currentPlayer !== PLAYER) {
+    return "It's not your turn!";
+  }
+  {
     // If it's a valid attack, pass the attack coordinates to the playersTurn function
     gameBoardTwo.receiveAttack(coordXY);
 
@@ -433,7 +445,7 @@ const attack = (coordXY) => {
 };
 
 //Turn Logic Module
-const turnManager = {
+let turnManager = {
   currentPlayer: PLAYER, // Initialize with the starting player
   switchTurn: function () {
     // Logic to switch the current player
