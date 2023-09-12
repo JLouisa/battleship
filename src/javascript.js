@@ -310,7 +310,7 @@ function gameLoop(node) {
   if (turnManager.currentPlayer === PLAYER) {
     attack(node.coordXY);
   } else {
-    attackCPU(arrCPU);
+    intellisense(arrCPU);
   }
 }
 
@@ -428,7 +428,7 @@ const attackCPU = (arr) => {
     if (turnManager.currentPlayer === CPUP) {
       // Schedule the CPU's turn after a delay of 2000 milliseconds (2 seconds)
       setTimeout(() => {
-        attackCPU(arrCPU);
+        intellisense(arrCPU);
       }, 2000);
     }
   }
@@ -452,7 +452,7 @@ const attack = (coordXY) => {
     if (turnManager.currentPlayer === CPUP) {
       // Schedule the CPU's turn after a delay of 2000 milliseconds (2 seconds)
       setTimeout(() => {
-        attackCPU(arrCPU);
+        intellisense(arrCPU);
       }, 2000);
     }
   }
@@ -467,7 +467,46 @@ let turnManager = {
   },
 };
 
-// =====================Start Game=======================
+// =====================Intellisense====================
+
+// Function to get neighboring nodes of a given node
+function getNeighborNodes(node) {
+  const neighbors = [];
+  for (const neighbor in node.neigborNodes) {
+    if (node.neigborNodes.hasOwnProperty(neighbor) && node.neigborNodes[neighbor] !== null) {
+      neighbors.push(node.neigborNodes[neighbor]);
+    }
+  }
+  return neighbors;
+}
+
+// Function to find available ship options from hitAttackArr
+function findShipOptions(hitAttackArr) {
+  const shipOptions = [];
+  hitAttackArr.forEach((coordXY) => {
+    const node = gameBoardOne.find(coordXY);
+    if (node.ship.health > 0) {
+      shipOptions.push(...getNeighborNodes(node));
+    }
+  });
+  return shipOptions;
+}
+
+function intellisense(arr) {
+  if (gameBoardOne.hitAttackArr.length === 0) {
+    attackCPU(arr);
+  } else {
+    const shipOptionsArr = findShipOptions(gameBoardOne.hitAttackArr);
+
+    if (shipOptionsArr.length === 0) {
+      attackCPU(arr);
+    } else {
+      attackCPU(shipOptionsArr);
+    }
+  }
+}
+
+// =====================Start Game======================
 
 gameBoardOne.render(playerGridContentEl);
 gameBoardTwo.render(CPUGridContentEl);
