@@ -255,9 +255,7 @@ class GameBoard {
   }
   allShipSunkenCheck() {
     if (this.allShipArr.every((ship) => ship.sunken === true)) {
-      console.log("All ships are sunken!");
-      turnManager.currentPlayer = "end";
-      // endGameReset(turnManager.currentPlayer);
+      gameOver(turnManager.currentPlayer);
       return true;
     } else {
       return false;
@@ -270,12 +268,26 @@ class GameBoard {
     this.allShipArr = [];
     this.inOrderArr = [];
     this.inOrderArr = [...this.inOrder()];
+    this.inOrderArr.forEach((node) => {
+      node.ship = null;
+      node.display = "";
+      node.DOM.textContent = "";
+      node.DOM.className = "";
+    });
   }
 }
 
-// let yourturn = true;
+function gameOver(winner) {
+  console.log("All ships are sunken!");
+  console.log(`${winner} has won the game!`);
+  turnManager.currentPlayer = "end";
+  endGameReset();
+}
 
 function gameLoop(node) {
+  if (turnManager.currentPlayer !== PLAYER) {
+    return console.log("It's not your turn");
+  }
   console.log(node.coordXY);
   gameBoardOne.renderContent();
   gameBoardTwo.renderContent();
@@ -286,23 +298,7 @@ function gameLoop(node) {
   }
 }
 
-function endGameReset(winner) {
-  console.log(`${winner} has won the game!`);
-  gameBoardOne.inOrderArr.forEach((node) => {
-    node.ship = null;
-    node.display = "";
-    node.DOM.textContent = "";
-    node.DOM.className = "";
-  });
-  gameBoardTwo.inOrderArr.forEach((node) => {
-    node.ship = null;
-    node.display = "";
-    node.DOM.textContent = "";
-    node.DOM.className = "";
-  });
-  gameBoardOne.placeShip();
-  gameBoardTwo.placeShip();
-
+function endGameReset() {
   gameBoardOne.reset();
   gameBoardTwo.reset();
 

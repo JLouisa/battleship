@@ -78,6 +78,7 @@ footer {
 
 .ground {
   text-align: center;
+  padding: 2em;
 }
 
 .box {
@@ -163,4 +164,8 @@ footer {
 
 .missMyShip {
   background-color: rgba(150, 150, 150, 0.668);
+}
+
+button {
+  margin-left: 1em;
 }
