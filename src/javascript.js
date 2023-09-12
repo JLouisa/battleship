@@ -344,6 +344,52 @@ class Player {
   }
 }
 
+// =======================Randomize Coordinates=======================
+/*
+A: 65
+B: 66
+C: 67
+D: 68
+E: 69
+F: 70
+G: 71
+H: 72
+I: 73
+J: 74
+*/
+
+function Unicode2Letter(unicodeX) {
+  return String.fromCharCode(unicodeX);
+}
+
+function VorH() {
+  const randomNumLetter = getRandomIndex(1, 4);
+  if (randomNumLetter <= 2) return "H";
+  return "V";
+}
+
+function randomArrNums() {
+  let randomArr = [];
+  let shipAlpha = [`${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`, "Dreadnought", 4, VorH()];
+  let shipBetaOne = [`${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`, "Dreadnought", 3, VorH()];
+  let shipBetaTwo = [`${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`, "Dreadnought", 3, VorH()];
+  let shipDeltaOne = [`${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`, "Dreadnought", 3, VorH()];
+  let shipDeltaTwo = [`${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`, "Dreadnought", 2, VorH()];
+  let shipEchoOne = [`${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`, "Dreadnought", 2, VorH()];
+  let shipEchoTwo = [`${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`, "Dreadnought", 2, VorH()];
+  let shipEchoThree = [`${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`, "Dreadnought", 1, VorH()];
+  return (randomArr = [
+    shipAlpha,
+    shipBetaOne,
+    shipBetaTwo,
+    shipDeltaOne,
+    shipDeltaTwo,
+    shipEchoOne,
+    shipEchoTwo,
+    shipEchoThree,
+  ]);
+}
+
 // =======================Start Up=======================
 const shipOne = ["D9", "Dreadnought", 4, "H"];
 const shipBigOne = ["B7", "Bretagne", 3, "H"];
@@ -388,10 +434,10 @@ const shipGridArr2 = [
 const playerOne = new Player("Player 1", true);
 const CPU = new Player("CPU", false);
 
-let arrCPU = [...combCoordXY(arrX, arrY)];
+const arrCPU = [...combCoordXY(arrX, arrY)];
 
-let gameBoardOne = new GameBoard(arrXY, false);
-let gameBoardTwo = new GameBoard(arrXY, true);
+const gameBoardOne = new GameBoard(arrXY, false);
+const gameBoardTwo = new GameBoard(arrXY, true);
 
 shipGridArr1.forEach((ship) => gameBoardOne.placeShip(ship[0], ship[1], ship[2], ship[3]));
 shipGridArr2.forEach((ship) => gameBoardTwo.placeShip(ship[0], ship[1], ship[2], ship[3]));
@@ -406,11 +452,11 @@ console.log("It's Player's turn");
 console.log("Type attack('Coordinates')");
 
 // Function to generate a random index between min and max (inclusive)
-const getRandomIndex = (min, max) => {
+function getRandomIndex(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
-};
+}
 
 // Function for CPU's attack
 const attackCPU = (arr) => {
