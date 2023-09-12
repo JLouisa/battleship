@@ -390,6 +390,40 @@ function randomArrNums() {
   ]);
 }
 
+function Unicode2Letter(unicodeX) {
+  return String.fromCharCode(unicodeX);
+}
+
+function getRandomIndex(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function VorH() {
+  return getRandomIndex(1, 4) <= 2 ? "H" : "V";
+}
+
+function randomArrNums() {
+  const shipNames = ["Dreadnought", "Bretagne", "Mikasa", "Kongo", "Yamato", "King", "Monitor", "Nagato"];
+  const shipLengths = [4, 3, 3, 3, 2, 2, 2, 1];
+  const randomArr = [];
+
+  for (let i = 0; i < 8; i++) {
+    const shipName = shipNames[i];
+    const shipLength = shipLengths[i];
+    const shipOrientation = VorH();
+    randomArr.push([
+      `${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`,
+      shipName,
+      shipLength,
+      shipOrientation,
+    ]);
+  }
+
+  return randomArr;
+}
+
 // =======================Start Up=======================
 const shipOne = ["D9", "Dreadnought", 4, "H"];
 const shipBigOne = ["B7", "Bretagne", 3, "H"];
