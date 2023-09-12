@@ -101,6 +101,7 @@ class Node {
     this.left = null;
     this.right = null;
     this.ship = null;
+    this.display = "";
     this.DOM = document.createElement("div");
     this.neigborNodes = {
       topNeihbor: calcNeigborVertical(coordXY, -1),
@@ -139,6 +140,7 @@ class GameBoard {
     this.root = createTree(arrXY, 0, arrXY.length - 1);
     this.missedAttackArr = [];
     this.hitAttackArr = [];
+    this.attackedNodeArr = [];
     this.allShipArr = [];
     this.inOrderArr = [...this.inOrder()];
   }
@@ -154,7 +156,6 @@ class GameBoard {
     } else {
       this.getInOrder(node.left, arr);
       node.DOM.addEventListener("click", () => {
-        // attack(node.coordXY);
         gameLoop(node);
       });
       arr.push(node);
@@ -170,10 +171,9 @@ class GameBoard {
     this.renderContent();
   }
   renderContent() {
-    this.missedAttackArr.forEach((coordXY) => {
-      const node = this.find(coordXY);
-      if (!node.DOM.textContent) {
-        node.DOM.textContent = "X";
+    this.attackedNodeArr.forEach((node) => {
+      if (node.display) {
+        node.DOM.textContent = node.display;
       }
     });
   }
@@ -230,10 +230,14 @@ class GameBoard {
     let node = this.find(coordXY);
     if (node.ship) {
       node.ship.hit();
+      node.display = "O";
       this.hitAttackArr.push(node.coordXY);
+      this.attackedNodeArr.push(node);
       console.log(`${turnManager.currentPlayer} has hit a ship. Nice hit!`);
     } else {
+      node.display = "X";
       this.missedAttackArr.push(node.coordXY);
+      this.attackedNodeArr.push(node);
       console.log(`${turnManager.currentPlayer} has missed`);
       turnManager.switchTurn();
     }
@@ -252,6 +256,8 @@ class GameBoard {
 
 function gameLoop(node) {
   console.log(node.coordXY);
+  gameBoardOne.renderContent();
+  gameBoardTwo.renderContent();
   if (turnManager.currentPlayer === PLAYER) {
     attack(node.coordXY);
   } else {
@@ -343,13 +349,14 @@ const attackCPU = (arr) => {
   let index = getRandomIndex(0, arr.length - 1);
 
   // Check if the CPU's attack is a miss
-  if (gameBoardOne.missedAttackArr.includes(arr[index])) {
+  if (gameBoardOne.missedAttackArr.includes(arr[index]) || gameBoardOne.hitAttackArr.includes(arr[index])) {
     // If it's a miss, recursively call attackCPU until a valid attack is found
     return attackCPU(arr);
   } else {
     // If it's a hit, pass the attack coordinates to the playersTurn function
     console.log(`CPU attacked Coordinates ${arr[index]}`);
-    gameBoardOne.receiveAttack(arr.splice(index, 1));
+    gameBoardOne.receiveAttack(arr[index]);
+    arr.splice(index, 1);
     // turnManager.switchTurn();
     console.log(`It's ${turnManager.currentPlayer}'s turn`);
     if (turnManager.currentPlayer === CPUP) {
@@ -391,8 +398,8 @@ const turnManager = {
 
 // =====================Start Game=======================
 
-gameBoardTwo.render(CPUGridContentEl);
 gameBoardOne.render(playerGridContentEl);
+gameBoardTwo.render(CPUGridContentEl);
 
 // vv==================Export=======================vv
 // module.exports = {
