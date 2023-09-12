@@ -262,6 +262,14 @@ class GameBoard {
       return false;
     }
   }
+  reset() {
+    this.missedAttackArr = [];
+    this.hitAttackArr = [];
+    this.attackedNodeArr = [];
+    this.allShipArr = [];
+    this.inOrderArr = [];
+    this.inOrderArr = [...this.inOrder()];
+  }
 }
 
 function gameLoop(node) {
@@ -277,8 +285,31 @@ function gameLoop(node) {
 
 function endGameReset(winner) {
   console.log(`${winner} has won the game!`);
-  gameBoardOne;
-  gameBoardTwo;
+  gameBoardOne.inOrderArr.forEach((node) => {
+    node.ship = null;
+    node.display = "";
+    node.DOM.textContent = "";
+    node.DOM.className = "";
+  });
+  gameBoardTwo.inOrderArr.forEach((node) => {
+    node.ship = null;
+    node.display = "";
+    node.DOM.textContent = "";
+    node.DOM.className = "";
+  });
+  gameBoardOne.placeShip();
+  gameBoardTwo.placeShip();
+
+  gameBoardOne.reset();
+  gameBoardTwo.reset();
+
+  shipGridArr1.forEach((ship) => gameBoardOne.placeShip(ship[0], ship[1], ship[2], ship[3]));
+  shipGridArr2.forEach((ship) => gameBoardTwo.placeShip(ship[0], ship[1], ship[2], ship[3]));
+
+  gameBoardOne.render(playerGridContentEl);
+  gameBoardTwo.render(CPUGridContentEl);
+
+  turnManager.currentPlayer = PLAYER;
 }
 
 //! Player
