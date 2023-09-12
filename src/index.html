@@ -16,6 +16,15 @@
     <div class="main">
         <div class="side sideLeft"></div>
         <div class="mid">
+            <div id="winningBoard">
+                <div id="winTitle">
+                    Winner: <span class="winner">Unnamed</span>
+                </div>
+                <div id="winText">
+                    <span class="winner">Unnamed</span> has sunken all the ships and won the game!
+                </div>
+                <div id="newBtn"><button id="newGame">New Game</button></div>
+            </div>
             <div class="playerGrid participant">
                 <div class="playerTitle title">
                     <h3>Your Map</h3>
@@ -51,8 +60,6 @@
                     </div>
                 </div>
                 <div class="playerGround ground">
-                    <button>Start</button>
-                    <button>Reset</button>
                 </div>
             </div>
             <div class="CPUGrid participant">
@@ -90,8 +97,8 @@
                     </div>
                 </div>
                 <div class="playerGround ground">
-                    <button>Start</button>
-                    <button>Reset</button>
+                    <button class="styleBtn">Start</button>
+                    <button class="styleBtn">Reset</button>
                 </div>
             </div>
         </div>

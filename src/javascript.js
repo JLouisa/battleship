@@ -16,7 +16,19 @@ const CPUBoxEl = document.querySelector(".CPUBox");
 const playerGridContentEl = document.querySelector(".playerGridContent");
 const CPUGridContentEl = document.querySelector(".CPUGridContent");
 
+const winningBoardEl = document.getElementById("winningBoard");
+const winnerEl = document.querySelectorAll(".winner");
+const winTextEl = document.getElementById("winText");
+
+const newGameBtn = document.getElementById("newGame");
+
 // ^^================================================^^
+
+//! Listen to the DOM
+newGameBtn.addEventListener("click", () => {
+  winningBoardEl.style.display = "none";
+  endGameReset();
+});
 
 const combCoordXY = (arrX, arrY) => {
   const arrComb = [];
@@ -278,10 +290,11 @@ class GameBoard {
 }
 
 function gameOver(winner) {
+  winningBoardEl.style.display = "block";
+  winnerEl.forEach((win) => (win.textContent = winner));
   console.log("All ships are sunken!");
-  console.log(`${winner} has won the game!`);
+  console.log(`${winnerEl[0].textContent} has won the game!`);
   turnManager.currentPlayer = "end";
-  endGameReset();
 }
 
 function gameLoop(node) {
@@ -373,7 +386,7 @@ shipGridArr2.forEach((ship) => gameBoardTwo.placeShip(ship[0], ship[1], ship[2],
 // ^^===========================================^^
 
 // Constants to represent players
-const PLAYER = "PLAYER";
+const PLAYER = "Player";
 const CPUP = "CPU";
 
 //! Attacking
