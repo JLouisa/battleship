@@ -167,6 +167,9 @@ class GameBoard {
   render(board) {
     this.inOrderArr.forEach((node) => {
       board.appendChild(node.DOM);
+      if (node.ship) {
+        node.DOM.classList.add("myShips");
+      }
     });
     this.renderContent();
   }
@@ -174,6 +177,12 @@ class GameBoard {
     this.attackedNodeArr.forEach((node) => {
       if (node.display) {
         node.DOM.textContent = node.display;
+      }
+      if (!node.ship) {
+        node.DOM.classList = "missMyShip";
+      }
+      if (node.ship) {
+        node.DOM.classList = "hitMyShip";
       }
     });
   }
@@ -230,12 +239,12 @@ class GameBoard {
     let node = this.find(coordXY);
     if (node.ship) {
       node.ship.hit();
-      node.display = "O";
+      node.display = "X";
       this.hitAttackArr.push(node.coordXY);
       this.attackedNodeArr.push(node);
       console.log(`${turnManager.currentPlayer} has hit a ship. Nice hit!`);
     } else {
-      node.display = "X";
+      node.display = "o";
       this.missedAttackArr.push(node.coordXY);
       this.attackedNodeArr.push(node);
       console.log(`${turnManager.currentPlayer} has missed`);

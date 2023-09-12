@@ -119,6 +119,7 @@ footer {
   border: none;
   pointer-events: none;
   cursor: not-allowed;
+  user-select: none;
 }
 
 .playerGridContent,
@@ -127,6 +128,7 @@ footer {
   grid-area: 2/2/12/12;
   display: grid;
   grid-template: repeat(10, 1fr) / repeat(10, 1fr);
+  grid-auto-flow: column;
 }
 
 .playerGridContent > div,
@@ -137,9 +139,23 @@ footer {
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
+  user-select: none;
 }
 
 .CPUGridContent > div:hover {
   background-color: lightgreen;
   transform: scale(1.05);
+}
+
+.playerGridContent > .myShips {
+  background-color: rgba(172, 255, 47, 0.27);
+  border-color: darkgreen;
+}
+
+.hitMyShip {
+  background-color: rgba(220, 20, 60, 0.273);
+}
+
+.missMyShip {
+  background-color: rgba(150, 150, 150, 0.668);
 }
