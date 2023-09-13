@@ -32,7 +32,7 @@ newGameBtn.addEventListener("click", () => {
   winningBoardEl.style.display = "none";
   endGameReset();
 });
-// randomBtn.addEventListener("click", );
+randomBtn.addEventListener("click", randomObj);
 // startBtn.addEventListener("click", );
 resetBtn.addEventListener("click", endGameReset);
 
@@ -346,73 +346,40 @@ class Player {
 
 // =======================Randomize Coordinates=======================
 /*
-A: 65
-B: 66
-C: 67
-D: 68
-E: 69
-F: 70
-G: 71
-H: 72
-I: 73
-J: 74
+A: 65, B: 66, C: 67, D: 68, E: 69, F: 70, G: 71, H: 72, I: 73, J: 74
 */
 
+// Function to convert a Unicode value to a letter
 function Unicode2Letter(unicodeX) {
   return String.fromCharCode(unicodeX);
 }
 
-function VorH() {
-  const randomNumLetter = getRandomIndex(1, 4);
-  if (randomNumLetter <= 2) return "H";
-  return "V";
-}
-
-function randomArrNums() {
-  let randomArr = [];
-  let shipAlpha = [`${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`, "Dreadnought", 4, VorH()];
-  let shipBetaOne = [`${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`, "Dreadnought", 3, VorH()];
-  let shipBetaTwo = [`${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`, "Dreadnought", 3, VorH()];
-  let shipDeltaOne = [`${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`, "Dreadnought", 3, VorH()];
-  let shipDeltaTwo = [`${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`, "Dreadnought", 2, VorH()];
-  let shipEchoOne = [`${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`, "Dreadnought", 2, VorH()];
-  let shipEchoTwo = [`${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`, "Dreadnought", 2, VorH()];
-  let shipEchoThree = [`${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`, "Dreadnought", 1, VorH()];
-  return (randomArr = [
-    shipAlpha,
-    shipBetaOne,
-    shipBetaTwo,
-    shipDeltaOne,
-    shipDeltaTwo,
-    shipEchoOne,
-    shipEchoTwo,
-    shipEchoThree,
-  ]);
-}
-
-function Unicode2Letter(unicodeX) {
-  return String.fromCharCode(unicodeX);
-}
-
+// Function to get a random integer between min and max (inclusive)
 function getRandomIndex(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+// Function to randomly select "H" (horizontal) or "V" (vertical)
 function VorH() {
   return getRandomIndex(1, 4) <= 2 ? "H" : "V";
 }
 
+// Function to generate an array of random ship data
 function randomArrNums() {
+  // Arrays to store ship names and their corresponding lengths
   const shipNames = ["Dreadnought", "Bretagne", "Mikasa", "Kongo", "Yamato", "King", "Monitor", "Nagato"];
   const shipLengths = [4, 3, 3, 3, 2, 2, 2, 1];
   const randomArr = [];
 
+  // Generate data for 8 ships
   for (let i = 0; i < 8; i++) {
     const shipName = shipNames[i];
     const shipLength = shipLengths[i];
     const shipOrientation = VorH();
+
+    // Add ship data to the randomArr array
     randomArr.push([
       `${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`,
       shipName,
@@ -422,6 +389,21 @@ function randomArrNums() {
   }
 
   return randomArr;
+}
+
+// Function to generate a random object containing player and CPU ship data
+function randomObj() {
+  // Create arrays of random ship data for the player and CPU
+  // Create an object to hold the ship data
+  const obj = {
+    playerArr: [...randomArrNums()],
+    CPUArr: [...randomArrNums()],
+  };
+
+  // Log the generated object for debugging
+  console.log(obj);
+
+  return obj;
 }
 
 // =======================Start Up=======================
@@ -465,6 +447,8 @@ const shipGridArr2 = [
   shipSamllThree2,
 ];
 
+const grid = randomObj();
+
 const playerOne = new Player("Player 1", true);
 const CPU = new Player("CPU", false);
 
@@ -473,8 +457,12 @@ const arrCPU = [...combCoordXY(arrX, arrY)];
 const gameBoardOne = new GameBoard(arrXY, false);
 const gameBoardTwo = new GameBoard(arrXY, true);
 
-shipGridArr1.forEach((ship) => gameBoardOne.placeShip(ship[0], ship[1], ship[2], ship[3]));
-shipGridArr2.forEach((ship) => gameBoardTwo.placeShip(ship[0], ship[1], ship[2], ship[3]));
+// grid.playerArr.forEach((ship) => gameBoardOne.placeShip(ship[0], ship[1], ship[2], ship[3]));
+// grid.CPUArr.forEach((ship) => gameBoardTwo.placeShip(ship[0], ship[1], ship[2], ship[3]));
+
+shipGridArr1.forEach((ship) => gameBoardTwo.placeShip(ship[0], ship[1], ship[2], ship[3]));
+shipGridArr2.forEach((ship) => gameBoardOne.placeShip(ship[0], ship[1], ship[2], ship[3]));
+
 // ^^===========================================^^
 
 // Constants to represent players
