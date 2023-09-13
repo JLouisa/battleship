@@ -156,10 +156,10 @@ footer {
   border-color: darkgreen;
 }
 
-.CPUGridContent > .myShips {
+/* .CPUGridContent > .myShips {
   background-color: lightcoral;
   border-color: crimson;
-}
+} */
 
 .hitMyShip {
   background-color: rgba(220, 20, 60, 0.273);
