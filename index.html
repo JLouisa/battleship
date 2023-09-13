@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/style.css">
+    <script src="./src/javascript.js" defer></script>
+    <!-- <script src="./test/functions.js" type="module" defer></script> -->
+    <title>Odin's Battleship</title>
+</head>
+
+<body>
+    <nav>
+        <h1>Odin's Battleship</h1>
+    </nav>
+    <div class="main">
+        <div class="side sideLeft"></div>
+        <div class="mid">
+            <div id="winningBoard">
+                <div id="winTitle">
+                    Winner: <span class="winner">Unnamed</span>
+                </div>
+                <div id="winText">
+                    <span class="winner">Unnamed</span> has sunken all the ships and won the game!
+                </div>
+                <div id="newBtn"><button id="newGame">New Game</button></div>
+            </div>
+            <div class="playerGrid participant">
+                <div class="playerTitle title">
+                    <h3>Your Map</h3>
+                </div>
+                <div class="playerGrid grid">
+                    <div class="playerBox box">
+                        <div class="columnGrid" id="playerColumnID">
+                            <div>&nbsp;</div>
+                            <div>A</div>
+                            <div>B</div>
+                            <div>C</div>
+                            <div>D</div>
+                            <div>E</div>
+                            <div>F</div>
+                            <div>G</div>
+                            <div>H</div>
+                            <div>I</div>
+                            <div>J</div>
+                        </div>
+                        <div class="rowGrid" id="playerRowID">
+                            <div>1</div>
+                            <div>2</div>
+                            <div>3</div>
+                            <div>4</div>
+                            <div>5</div>
+                            <div>6</div>
+                            <div>7</div>
+                            <div>8</div>
+                            <div>9</div>
+                            <div>10</div>
+                        </div>
+                        <div class="playerGridContent"></div>
+                    </div>
+                </div>
+                <div class="playerGround ground">
+                    <button class="styleBtn" id="randomBtn">Randomize</button>
+                </div>
+            </div>
+            <div class="CPUGrid participant">
+                <div class="CPUTitle title">
+                    <h3>CPU Map</h3>
+                </div>
+                <div class="CPUGrid grid">
+                    <div class="CPUBox box">
+                        <div class="columnGrid" id="CPUColumnID">
+                            <div>&nbsp;</div>
+                            <div>A</div>
+                            <div>B</div>
+                            <div>C</div>
+                            <div>D</div>
+                            <div>E</div>
+                            <div>F</div>
+                            <div>G</div>
+                            <div>H</div>
+                            <div>I</div>
+                            <div>J</div>
+                        </div>
+                        <div class="rowGrid" id="CPURowID">
+                            <div>1</div>
+                            <div>2</div>
+                            <div>3</div>
+                            <div>4</div>
+                            <div>5</div>
+                            <div>6</div>
+                            <div>7</div>
+                            <div>8</div>
+                            <div>9</div>
+                            <div>10</div>
+                        </div>
+                        <div class="CPUGridContent"></div>
+                    </div>
+                </div>
+                <div class="playerGround ground">
+                    <button class="styleBtn" id="startBtn">Start</button>
+                    <button class="styleBtn" id="resetBtn">Reset</button>
+                </div>
+            </div>
+        </div>
+        <div class="side sideRight"></div>
+    </div>
+    <footer>
+        <h1>©2023 | Jonathan Louisa</h1>
+    </footer>
+</body>
+
+</html>
