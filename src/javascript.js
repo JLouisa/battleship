@@ -32,7 +32,10 @@ newGameBtn.addEventListener("click", () => {
   winningBoardEl.style.display = "none";
   endGameReset();
 });
-randomBtn.addEventListener("click", randomObj);
+randomBtn.addEventListener("click", () => {
+  endGameReset();
+  random();
+});
 // startBtn.addEventListener("click", );
 resetBtn.addEventListener("click", endGameReset);
 
@@ -231,15 +234,17 @@ class GameBoard {
 
     switch (orient) {
       case "H": {
-        let current = verifyCoordGridHorizontal(coordXY, stats);
+        // let current = verifyCoordGridHorizontal(coordXY, stats);
         let rightNeihbor = "rightNeihbor";
-        return this.createMultipleShips(current, ship, stats, rightNeihbor);
+        // return this.createMultipleShips(current, ship, stats, rightNeihbor);
+        return this.createMultipleShips(coordXY, ship, stats, rightNeihbor);
         break;
       }
       case "V": {
-        let current = verifyCoordGridVertical(coordXY, stats);
+        // let current = verifyCoordGridVertical(coordXY, stats);
         let botNeihbor = "botNeihbor";
-        return this.createMultipleShips(current, ship, stats, botNeihbor);
+        // return this.createMultipleShips(current, ship, stats, botNeihbor);
+        return this.createMultipleShips(coordXY, ship, stats, botNeihbor);
         break;
       }
     }
@@ -285,11 +290,11 @@ class GameBoard {
     }
   }
   reset() {
-    this.missedAttackArr = [];
-    this.hitAttackArr = [];
-    this.attackedNodeArr = [];
-    this.allShipArr = [];
-    this.inOrderArr = [];
+    this.missedAttackArr.splice(0, this.missedAttackArr.length);
+    this.hitAttackArr.splice(0, this.hitAttackArr.length);
+    this.attackedNodeArr.splice(0, this.attackedNodeArr.length);
+    this.allShipArr.splice(0, this.allShipArr.length);
+    this.inOrderArr.splice(0, this.inOrderArr.length);
     this.inOrderArr = [...this.inOrder()];
     this.inOrderArr.forEach((node) => {
       node.ship = null;
@@ -300,6 +305,7 @@ class GameBoard {
   }
 }
 
+//! Game Module
 function gameOver(winner) {
   winningBoardEl.style.display = "block";
   winnerEl.forEach((win) => (win.textContent = winner));
@@ -325,14 +331,16 @@ function endGameReset() {
   gameBoardOne.reset();
   gameBoardTwo.reset();
 
-  shipGridArr1.forEach((ship) => gameBoardOne.placeShip(ship[0], ship[1], ship[2], ship[3]));
-  shipGridArr2.forEach((ship) => gameBoardTwo.placeShip(ship[0], ship[1], ship[2], ship[3]));
+  let grid = randomObj();
+
+  grid.playerArr.forEach((ship) => gameBoardOne.placeShip(ship[0], ship[1], ship[2], ship[3]));
+  grid.CPUArr.forEach((ship) => gameBoardTwo.placeShip(ship[0], ship[1], ship[2], ship[3]));
 
   gameBoardOne.render(playerGridContentEl);
   gameBoardTwo.render(CPUGridContentEl);
 
   turnManager.currentPlayer = PLAYER;
-  arrCPU = [];
+  arrCPU.splice(0, arrCPU.length);
   arrCPU = [...combCoordXY(arrX, arrY)];
 }
 
@@ -349,11 +357,43 @@ class Player {
 A: 65, B: 66, C: 67, D: 68, E: 69, F: 70, G: 71, H: 72, I: 73, J: 74
 */
 
-// Function to convert a Unicode value to a letter
-function Unicode2Letter(unicodeX) {
-  return String.fromCharCode(unicodeX);
+//==============
+let theArrayXYLimit = [
+  ["A", "J", 0, 9],
+  ["A", "I", 0, 8],
+  ["A", "H", 0, 7],
+  ["A", "G", 0, 6],
+];
+
+let coordsArray = [
+  combining(theArrayXYLimit[0]),
+  combining(theArrayXYLimit[1]),
+  combining(theArrayXYLimit[2]),
+  combining(theArrayXYLimit[3]),
+];
+
+function combining(arrXY) {
+  let arr = [];
+  let l1 = arrXY[0].charCodeAt(0);
+  let l2 = arrXY[1].charCodeAt(0);
+  for (let j = l1; j <= l2; j++) {
+    for (let i = arrXY[2]; i <= arrXY[3]; i++) {
+      arr.push(String.fromCharCode(j) + i);
+    }
+  }
+  return arr;
 }
 
+function getRandomArrayItem(arr) {
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  return arr[randomIndex];
+}
+//============
+
+//! Verification array
+let checkArray = [];
+
+//! Randomize grid generator
 // Function to get a random integer between min and max (inclusive)
 function getRandomIndex(min, max) {
   min = Math.ceil(min);
@@ -370,6 +410,7 @@ function VorH() {
 function randomArrNums() {
   // Arrays to store ship names and their corresponding lengths
   const shipNames = ["Dreadnought", "Bretagne", "Mikasa", "Kongo", "Yamato", "King", "Monitor", "Nagato"];
+  const coordsXYs = ["D9", "B7", "J2", "E0", "A1", "H7", "G4", "B4"];
   const shipLengths = [4, 3, 3, 3, 2, 2, 2, 1];
   const randomArr = [];
 
@@ -377,17 +418,17 @@ function randomArrNums() {
   for (let i = 0; i < 8; i++) {
     const shipName = shipNames[i];
     const shipLength = shipLengths[i];
-    const shipOrientation = VorH();
+    const coordsXY = getRandomArrayItem(coordsArray[shipLength - 1]);
+    const shipOrientation = VorH().slice();
+
+    // Check Validity
+    let theCoordXY = checkCoordValidity(coordsXY, shipLength, shipOrientation);
 
     // Add ship data to the randomArr array
-    randomArr.push([
-      `${Unicode2Letter(getRandomIndex(65, 74))}${getRandomIndex(0, 9)}`,
-      shipName,
-      shipLength,
-      shipOrientation,
-    ]);
+    randomArr.push([theCoordXY[0], shipName, theCoordXY[1], theCoordXY[2]]);
   }
-
+  console.log(randomArr);
+  checkArray = [];
   return randomArr;
 }
 
@@ -400,11 +441,56 @@ function randomObj() {
     CPUArr: [...randomArrNums()],
   };
 
-  // Log the generated object for debugging
-  console.log(obj);
-
   return obj;
 }
+
+//-----------------------------------------------------
+function checkCoordValidity(coordXY, num, orient) {
+  let tempArr = createArrayfromXY(coordXY, num, orient);
+  let allAvaidable = true;
+
+  if (checkArray.length === 0) {
+    console.log("path 1");
+    checkArray.push(...tempArr);
+    return [coordXY, num, orient];
+  }
+  if (tempArr.some((cord) => checkArray.includes(cord))) {
+    allAvaidable = false;
+  } else {
+    allAvaidable = true;
+  }
+  if (allAvaidable === true) {
+    console.log("path 2");
+    checkArray.push(...tempArr);
+    return [coordXY, num, orient];
+  }
+  console.log("path 3");
+  return checkCoordValidity(getRandomArrayItem(coordsArray[num - 1]), num, orient);
+}
+
+function createArrayfromXY(cXY, num, ornt) {
+  let array = [];
+  let temp = cXY.slice();
+
+  if (ornt === "H") {
+    for (let i = 0; i < num; i++) {
+      temp = cXY.split("");
+      temp[0] += i;
+      array.push(temp.join(""));
+    }
+    return array;
+  }
+
+  if (ornt === "V") {
+    for (let i = 0; i < num; i++) {
+      temp = cXY.split("");
+      temp[1] += i;
+      array.push(temp.join(""));
+    }
+    return array;
+  }
+}
+//-----------------------------------------------------
 
 // =======================Start Up=======================
 const shipOne = ["D9", "Dreadnought", 4, "H"];
@@ -415,7 +501,6 @@ const shipMediumTwo = ["A1", "Yamato", 2, "H"];
 const shipSmallOne = ["H1", "King", 1, "H"];
 const shipSmallTwo = ["G4", "Monitor", 1, "H"];
 const shipSamllThree = ["B4", "Nagato", 1, "H"];
-
 const shipGridArr1 = [
   shipOne,
   shipBigOne,
@@ -447,18 +532,22 @@ const shipGridArr2 = [
   shipSamllThree2,
 ];
 
-const grid = randomObj();
-
 const playerOne = new Player("Player 1", true);
 const CPU = new Player("CPU", false);
 
-const arrCPU = [...combCoordXY(arrX, arrY)];
+let arrCPU = [...combCoordXY(arrX, arrY)];
 
 const gameBoardOne = new GameBoard(arrXY, false);
 const gameBoardTwo = new GameBoard(arrXY, true);
 
-// grid.playerArr.forEach((ship) => gameBoardOne.placeShip(ship[0], ship[1], ship[2], ship[3]));
-// grid.CPUArr.forEach((ship) => gameBoardTwo.placeShip(ship[0], ship[1], ship[2], ship[3]));
+let grid = randomObj();
+
+function random() {
+  grid = randomObj();
+
+  grid.playerArr.forEach((ship) => gameBoardOne.placeShip(ship[0], ship[1], ship[2], ship[3]));
+  grid.CPUArr.forEach((ship) => gameBoardTwo.placeShip(ship[0], ship[1], ship[2], ship[3]));
+}
 
 shipGridArr1.forEach((ship) => gameBoardTwo.placeShip(ship[0], ship[1], ship[2], ship[3]));
 shipGridArr2.forEach((ship) => gameBoardOne.placeShip(ship[0], ship[1], ship[2], ship[3]));
@@ -586,7 +675,19 @@ function intellisense(arr) {
 gameBoardOne.render(playerGridContentEl);
 gameBoardTwo.render(CPUGridContentEl);
 
-// vv==================Export=======================vv
+/* =====================Pseudo Code======================
+
+1. Take an coordinate XY from gridXY array.
+2. If orientation is "H".
+      add number of coordinates from index(XY) x ship length times.
+3. If orantation is "V".
+      create coordinates with calcNeigborVertical function and addd to array
+4. Compare the array and verify all coordinates are present in lookUpArray
+5. If all coordinates are not present, repeat step 1.
+6. If all coordinates are present, splice the all out the lookUpArray
+   Send to ship grid after.
+
+ vv==================Export=======================vv */
 // module.exports = {
 //   verifyCoordGridVertical,
 //   verifyCoordGridHorizontal,

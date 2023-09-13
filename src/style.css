@@ -249,3 +249,9 @@ button {
   border: 0;
   transition: box-shadow 0.2s;
 }
+
+#randomBtn,
+#startBtn,
+#resetBtn {
+  visibility: hidden;
+}
