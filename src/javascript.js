@@ -449,22 +449,17 @@ function checkCoordValidity(coordXY, num, orient) {
   let tempArr = createArrayfromXY(coordXY, num, orient);
   let allAvaidable = true;
 
-  if (checkArray.length === 0) {
-    console.log("path 1");
-    checkArray.push(...tempArr);
-    return [coordXY, num, orient];
-  }
+  // Check if any of the coordinates are already occupied
   if (tempArr.some((cord) => checkArray.includes(cord))) {
     allAvaidable = false;
   } else {
     allAvaidable = true;
   }
+
   if (allAvaidable === true) {
-    console.log("path 2");
     checkArray.push(...tempArr);
     return [coordXY, num, orient];
   }
-  console.log("path 3");
   return checkCoordValidity(getRandomArrayItem(coordsArray[num - 1]), num, orient);
 }
 
